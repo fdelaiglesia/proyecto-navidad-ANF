@@ -18,8 +18,11 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `comicStore`
+-- Base de datos: `comic store`
 --
+CREATE DATABASE IF NOT EXISTS `comicStore` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+USE `comicStore`;
+
 
 -- --------------------------------------------------------
 
@@ -60,7 +63,7 @@ CREATE TABLE `Comic` (
   `tituloComic` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `precio` int(10) NOT NULL,
   `cantidad` int(10) NOT NULL,
-  `portadaComic` varchar(60) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `portadaComic` varchar(60) COLLATE utf8mb4_spanish2_ci ,
   `idCategoria` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
@@ -76,6 +79,25 @@ CREATE TABLE `Pedido` (
   `direccionEnvio` varchar(60) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `fechaConfrmacion` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+
+
+/*-------------------------- Insertar datos en la tablas ---------------------------*/
+
+
+/*Tabla de Comic*/
+
+INSERT INTO `Comic` (`idComic`, `tituloComic`, `precio`, `cantidad`, `portadaComic`, `idCategoria`) VALUES
+(1,'AquaMan',18,50,NULL,1),
+(2,'Justice League',25,50,NULL,2),
+(3,'SpiderMan',18,50,NULL,1);
+
+/*Tabla Cliente*/
+
+/*Tabla Categoria*/
+INSERT INTO `Categoria` (`idCategoria`, `nombreCategoria`) VALUES
+(1,'Accion'),
+(2,'Fantasia');
 
 --
 -- Index pour les tables déchargées
