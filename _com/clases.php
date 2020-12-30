@@ -19,6 +19,7 @@ trait Identificable
     }
 }
 
+/*----------------- Clase Categoria -------------------*/
 class Categoria extends Dato
 {
     use Identificable;
@@ -44,6 +45,7 @@ class Categoria extends Dato
 
 }
 
+/*----------------- Clase Cliente -------------------*/
 class Cliente extends Dato
 {
     use Identificable;
@@ -87,6 +89,7 @@ class Cliente extends Dato
     public function setApellidos(string $apellidos): void{$this->apellidos = $apellidos;}
 }
 
+/*----------------- Clase Comic -------------------*/
 class Comic extends Dato
 {
     use Identificable;
@@ -94,9 +97,8 @@ class Comic extends Dato
     private int $precio;
     private int $cantidad;
     private string $portadaComic;
-    private string $idCategoria;
-    // TODO: clase comic (no estoy seguro de como poner el idCategoria para relacionarlo con la clase categoria)
-    // TODO:
+    private string $idCategoriaDeComic;
+
     public function __construct(int $idComic, string $tituloComic, int $precio,
                                 int $cantidad, string $portadaComic, Categoria $categoria)
     {
@@ -105,7 +107,7 @@ class Comic extends Dato
         $this->setPrecio($precio);
         $this->setCantidad($cantidad);
         $this->setPortadaComic($portadaComic);
-        //$this->
+        $this->setIdCategoriaDeComic($categoria);
     }
 
     /*------------------ Funciones GET de todas la propiedades de Cliente -----------------*/
@@ -113,11 +115,54 @@ class Comic extends Dato
     public function getPrecio(): int{return $this->precio;}
     public function getCantidad(): int{return $this->cantidad;}
     public function getPortadaComic(): string{return $this->portadaComic;}
-
+    public function getIdCategoriaDeComic(): string{return $this->idCategoriaDeComic;}
     /*------------------ Funciones SET de todas la propiedades de Cliente -----------------*/
     public function setTituloComic(string $tituloComic): void{$this->tituloComic = $tituloComic;}
     public function setPrecio(int $precio): void{$this->precio = $precio;}
     public function setCantidad(int $cantidad): void{$this->cantidad = $cantidad;}
     public function setPortadaComic(string $portadaComic): void{$this->portadaComic = $portadaComic;}
-
+    public function setIdCategoriaDeComic(Categoria $categoria): void
+    {
+        $this->idCategoriaDeComic = $categoria->getId();
+    }
 }
+
+/*----------------- Clase Carrito -------------------*/
+class Carrito extends Dato
+{
+    use Identificable;
+    private string $idCliente;
+
+    public function __construct(Cliente $cliente)
+    {
+
+    }
+
+    public function getIdCliente(): string{return $this->idCliente;}
+    public function setIdCliente(Cliente $cliente): void {$this->idCliente = $cliente->getId();}
+}
+
+/*----------------- Clase Pedido -------------------*/
+class Pedido extends Carrito{
+    private string $direccionEnvio;
+    private string $fechaConfirmacion;
+
+    public function __construct(Cliente $cliente, string $direccionEnvio, string $fechaConfirmacion)
+    {
+        parent::__construct($cliente);
+        $this->setDireccionEnvio($direccionEnvio);
+        $this->setDireccionEnvio($fechaConfirmacion);
+    }
+
+    /*------------------ Funciones GET de todas la propiedades de Pedido -----------------*/
+    public function getDireccionEnvio(): string{return $this->direccionEnvio;}
+    public function getFechaConfirmacion(): string{return $this->fechaConfirmacion;}
+
+    /*------------------ Funciones SET de todas la propiedades de Cliente -----------------*/
+    public function setDireccionEnvio(string $direccionEnvio): void{$this->direccionEnvio = $direccionEnvio;}
+    public function setFechaConfirmacion(string $fechaConfirmacion): void{$this->fechaConfirmacion = $fechaConfirmacion;}
+}
+
+
+
+
