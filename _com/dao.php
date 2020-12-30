@@ -1,4 +1,5 @@
 <?php
+// TODO: añadir cosas aqui segun necesitamos aqui
 
 require_once "clases.php";
 require_once "varios.php";

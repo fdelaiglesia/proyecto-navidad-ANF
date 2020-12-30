@@ -1,5 +1,5 @@
 <?php
-
+// TODO: añadir cosas aqui segun necesitamos aqui
 abstract class Dato
 {
 }
