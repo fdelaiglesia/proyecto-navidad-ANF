@@ -2,7 +2,7 @@
 require_once "Com/DAO.php";
 
 
-$idComic= (int)$_REQUEST["idComic"];
+$id = (int)$_REQUEST["idComic"];
 
 $nuevaEntrada = ($idComic == -1);
 
@@ -16,8 +16,8 @@ if ($nuevaEntrada) {
 }else{
     $comic = DAO::comicObtenerPorId($idComic);
     $tituloComic = $comic-> getTituloComic();
-    $precioComic= $comic-> getPrecio();
-    $cantidadComic=$comic-> getCantidad();
+    $precioComic= $comic-> getPrecioComic();
+    $cantidadComic=$comic-> getCantidadComic();
     $portadaComic=($comic-> getPortadaComic()==1);
     $comicIdCategoria = $comic->getIdCategoriaDeComic();
     
@@ -48,7 +48,7 @@ if ($nuevaEntrada) {
         <input type='hidden' name='id' value='<?= $id ?>' />
 
         <label for='titulo'>Titulo</label>
-        <input type='text' name='titulo' value='<?= $tituloComic ?>' />
+        <input type='text' name='titulo' value='<?= $ $tituloComic ?>' />
         <br />
 
         <label for='precio'> Precio</label>

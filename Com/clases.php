@@ -104,22 +104,22 @@ class Comic extends Dato
     {
         $this->setId($idComic);
         $this->setTituloComic($tituloComic);
-        $this->setPrecio($precio);
-        $this->setCantidad($cantidad);
+        $this->setPrecioComic($precio);
+        $this->setCantidadComic($cantidad);
         $this->setPortadaComic($portadaComic);
         $this->setIdCategoriaDeComic($idCategoriaDeComic);
     }
 
     /*------------------ Funciones GET de todas la propiedades de Cliente -----------------*/
     public function getTituloComic(): string{return $this->tituloComic;}
-    public function getPrecio(): int{return $this->precio;}
-    public function getCantidad(): int{return $this->cantidad;}
+    public function getPrecioComic(): int{return $this->precio;}
+    public function getCantidadComic(): int{return $this->cantidad;}
     public function getPortadaComic(): string{return $this->portadaComic;}
     public function getIdCategoriaDeComic(): int{return $this->idCategoriaDeComic;}
     /*------------------ Funciones SET de todas la propiedades de Cliente -----------------*/
     public function setTituloComic(string $tituloComic): void{$this->tituloComic = $tituloComic;}
-    public function setPrecio(int $precio): void{$this->precio = $precio;}
-    public function setCantidad(int $cantidad): void{$this->cantidad = $cantidad;}
+    public function setPrecioComic(int $precio): void{$this->precio = $precio;}
+    public function setCantidadComic(int $cantidad): void{$this->cantidad = $cantidad;}
     public function setPortadaComic( $portadaComic): void{$this->portadaComic = $portadaComic;}
     public function setIdCategoriaDeComic(int $idCategoriaDeComic): void
     {
