@@ -61,6 +61,17 @@ class DAO
     {
         return new Comic($fila["idComic"], $fila["tituloComic"], $fila["precio"], $fila["cantidad"], $fila["portadaComic"], $fila["idCategoria"]);
     }
+   
+    public static function comicObtenerPorId(int $id): ? Comic
+    {
+        $rs = self::ejecutarConsultaObtener(
+            "SELECT * FROM Comic WHERE idComic=?",
+            [$id]
+        );
+        if ($rs) return self::comicCrearDesdeRs($rs[0]);
+        else return null;
+    }
+   
 
     public static function comicObtenerTodos(): array
     {
