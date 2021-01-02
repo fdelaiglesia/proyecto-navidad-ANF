@@ -1,10 +1,5 @@
 <?php
 declare(strict_types=1);
-<<<<<<< HEAD
-//MOSTRAR ERRORES *PHP 8.0*
-=======
->>>>>>> d710851d093a77706b430f3bc057b2c628f412bf
-
 
 session_start();
 
