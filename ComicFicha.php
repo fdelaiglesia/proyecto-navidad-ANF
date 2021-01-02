@@ -2,7 +2,7 @@
 require_once "Com/DAO.php";
 
 
-$id = (int)$_REQUEST["idComic"];
+$idComic = (int)$_REQUEST["idComic"];
 
 $nuevaEntrada = ($idComic == -1);
 
@@ -48,7 +48,7 @@ if ($nuevaEntrada) {
         <input type='hidden' name='id' value='<?= $id ?>' />
 
         <label for='titulo'>Titulo</label>
-        <input type='text' name='titulo' value='<?= $ $tituloComic ?>' />
+        <input type='text' name='titulo' value='<?= $tituloComic ?>' />
         <br />
 
         <label for='precio'> Precio</label>
