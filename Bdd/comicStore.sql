@@ -16,7 +16,9 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-
+DROP DATABASE IF EXISTS comicStore;
+CREATE DATABASE  comicStore;
+USE  comicStore;
 --
 -- Base de datos: `comicstore`
 --

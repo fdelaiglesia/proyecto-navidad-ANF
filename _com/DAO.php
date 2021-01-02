@@ -1,8 +1,8 @@
 <?php
 // TODO: añadir cosas aqui segun necesitamos aqui
 
-require_once "Com/clases.php";
-require_once "Com/varios.php";
+require_once "_com/clases.php";
+require_once "_com/varios.php";
 
 
 class DAO
@@ -99,4 +99,60 @@ class DAO
     }
 // Funciones para Cliente
 
+
+/*--------------------------- FUNCIONES PARA CLIENTE ------------------------------*/
+    public static function obtenerCliente(string $usuarioCliente, string $emailCliente): ?array
+    {
+        $pdo = DAO::obtenerPdoConexionBD();
+        $sql="SELECT * FROM cliente WHERE usuarioCliente='$usuarioCliente' OR emailCliente='$emailCliente'";
+        $select= $pdo->prepare($sql);
+        $select->execute([]);
+        $resultados= $select->fetchAll();
+        return $resultados;
     }
+
+    public static function guardarImg($usuarioCliente,$foto,$ruta){
+        //foto: name del de la foto
+        // ruta: ruta temporal
+        // usuario: usuario de que vamos a modificar
+
+        $destino= "FotosDePerfil/".$foto;
+        copy($ruta, $destino);
+        $extension=pathinfo($foto,PATHINFO_EXTENSION);
+        $nombreNuevo="$usuarioCliente"."."."$extension";
+        rename("FotosDePerfil/$foto","FotosDePerfil/"."$nombreNuevo");
+        /*------- Insertar en la BDD ---------*/
+        $pdo=obtenerPdoConexionBD();
+        $sqlSentencia="UPDATE cliente SET fotoDePerfilCliente=? WHERE idCliente=?";
+        $sqlUpdate=$pdo->prepare($sqlSentencia);
+        $sqlUpdate->execute([$nombreNuevo,$usuarioCliente]);
+    }
+    public static function crearUsuario(array $informacionUsuario){
+        $pdo=DAO::obtenerPdoConexionBD();
+        /*CRAGAR LOS DATOS DEL ARRAY*/
+        $codigoCookie=$informacionUsuario["codigoCookieCliente"];
+        $nombreCliente=$informacionUsuario["nombreCliente"];
+        $apellidosCliente=$informacionUsuario["apellidosCliente"];
+        $usuarioCliente=$informacionUsuario["usuarioCliente"];
+        $emailCliente=$informacionUsuario["emailCliente"];
+        $foto=$informacionUsuario["foto"];
+        $ruta=$informacionUsuario["ruta"];
+        $verificarIdCliente=obtenerCliente($usuarioCliente,$emailCliente);
+
+        if(!empty($verificarIdCliente)){
+            $_SESSION["txt"]="¡ERROR! El usuario introducido ya existe.";
+            redireccionar("UsuarioNuevoFormulario.php");
+        }else{
+            $sqlSentencia="INSERT INTO cliente (usuarioCliente,emailCliente,contrasennaCliente,codigoCookieCliente,fotoDePerfilCliente,nombreCliente,apellidosCliente) VALUES (?,?,?,?,?,?,?)";
+            $sqlInsert= $pdo->prepare($sqlSentencia);
+            $sqlInsert->execute([$usuarioCliente,$emailCliente,password_hash($usuarioCliente,PASSWORD_BCRYPT)
+                ,$codigoCookie,$foto,$nombreCliente,$apellidosCliente]);
+            guardarImg($usuarioCliente,$foto,$ruta);
+            if($sqlInsert->rowCount()==1){
+                $_SESSION["txt"]="¡La cuenta se ha creado correctamente! Ya pudes iniciar session.";
+                redireccionar("UsuarioNuevoFormulario.php");
+            }else{
+                $_SESSION["txt"]="¡ERROR! No se ha podido crear la cuenta, intentalo otra vez.";
+                redireccionar("UsuarioNuevoFormulario.php");
+            }}}//FIN FUNCION DE CREAR NUEVO USUARIO
+}// FIN DE LA CLASSE DAO
