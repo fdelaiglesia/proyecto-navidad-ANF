@@ -59,14 +59,14 @@ class DAO
     }
     private static function comicCrearDesdeRs(array $fila): Comic
     {
-        return new Comic($fila["idComic"], $fila["tituloComic"], $fila["precio"], $fila["cantidad"], $fila["portadaComic"], $fila["idCategoria"]);
+        return new Comic($fila["idComic"], $fila["tituloComic"], $fila["precioComic"], $fila["cantidadComic"], $fila["portadaComic"], $fila["idCategoria"]);
     }
    
     public static function comicObtenerPorId(int $id): ? Comic
     {
         $rs = self::ejecutarConsultaObtener(
             "SELECT * FROM Comic WHERE idComic=?",
-            [$idComic]
+            [$id]
         );
         if ($rs) return self::comicCrearDesdeRs($rs[0]);
         else return null;
