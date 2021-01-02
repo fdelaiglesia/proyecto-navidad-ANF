@@ -1,5 +1,4 @@
 <?php
-
 require_once "_com/DAO.php";
 
 $id = (int)$_REQUEST["idComic"];
