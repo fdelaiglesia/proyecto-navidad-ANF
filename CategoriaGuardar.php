@@ -1,5 +1,5 @@
 <?php
-require_once "Com/DAO.php";
+require_once "_com/DAO.php";
 
 $id = (int)$_REQUEST["idCategoria"];
 $nombre = $_REQUEST["nombreCategoria"];

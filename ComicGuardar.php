@@ -1,5 +1,5 @@
 <?php
-require_once "Com/DAO.php";
+require_once "_com/DAO.php";
 
 $idComic = (int)$_REQUEST["idComic"];
 $titloComic= (string)$_REQUEST["tituloComic"];
