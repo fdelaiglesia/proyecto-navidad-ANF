@@ -122,32 +122,34 @@ class DAO
         $nombreNuevo="$usuarioCliente"."."."$extension";
         rename("FotosDePerfil/$foto","FotosDePerfil/"."$nombreNuevo");
         /*------- Insertar en la BDD ---------*/
-        $pdo=obtenerPdoConexionBD();
+        $pdo=DAO::obtenerPdoConexionBD();
         $sqlSentencia="UPDATE cliente SET fotoDePerfilCliente=? WHERE idCliente=?";
         $sqlUpdate=$pdo->prepare($sqlSentencia);
         $sqlUpdate->execute([$nombreNuevo,$usuarioCliente]);
     }
-    public static function crearUsuario(array $informacionUsuario){
+    public static function crearUsuario(array $informacionUsuario)
+    {
         $pdo=DAO::obtenerPdoConexionBD();
         /*CRAGAR LOS DATOS DEL ARRAY*/
-        $codigoCookie=$informacionUsuario["codigoCookieCliente"];
-        $nombreCliente=$informacionUsuario["nombreCliente"];
-        $apellidosCliente=$informacionUsuario["apellidosCliente"];
-        $usuarioCliente=$informacionUsuario["usuarioCliente"];
-        $emailCliente=$informacionUsuario["emailCliente"];
-        $foto=$informacionUsuario["foto"];
-        $ruta=$informacionUsuario["ruta"];
-        $verificarIdCliente=obtenerCliente($usuarioCliente,$emailCliente);
+        $codigoCookie=(string)$informacionUsuario["codigoCookieCliente"];
+        $nombreCliente=(string)$informacionUsuario["nombreCliente"];
+        $apellidosCliente=(string)$informacionUsuario["apellidosCliente"];
+        $usuarioCliente=(string)$informacionUsuario["usuarioCliente"];
+        $emailCliente=(string)$informacionUsuario["emailCliente"];
+        $foto="eyy";
+       // $ruta=$informacionUsuario["ruta"];
+        $verificarIdCliente=DAO::obtenerCliente($usuarioCliente,$emailCliente);
 
         if(!empty($verificarIdCliente)){
             $_SESSION["txt"]="¡ERROR! El usuario introducido ya existe.";
             redireccionar("UsuarioNuevoFormulario.php");
         }else{
-            $sqlSentencia="INSERT INTO cliente (usuarioCliente,emailCliente,contrasennaCliente,codigoCookieCliente,fotoDePerfilCliente,nombreCliente,apellidosCliente) VALUES (?,?,?,?,?,?,?)";
+            $sqlSentencia="INSERT INTO cliente (usuarioCliente,emailCliente,contrasennaCliente,
+                     codigoCookieCliente,fotoDePerfilCliente,nombreCliente,apellidosCliente) VALUES (?,?,?,?,?,?,?)";
             $sqlInsert= $pdo->prepare($sqlSentencia);
             $sqlInsert->execute([$usuarioCliente,$emailCliente,password_hash($usuarioCliente,PASSWORD_BCRYPT)
                 ,$codigoCookie,$foto,$nombreCliente,$apellidosCliente]);
-            guardarImg($usuarioCliente,$foto,$ruta);
+          //  guardarImg($usuarioCliente,$foto,$ruta);
             if($sqlInsert->rowCount()==1){
                 $_SESSION["txt"]="¡La cuenta se ha creado correctamente! Ya pudes iniciar session.";
                 redireccionar("UsuarioNuevoFormulario.php");

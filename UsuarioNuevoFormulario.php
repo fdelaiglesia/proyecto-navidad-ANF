@@ -21,6 +21,7 @@
         <input type="text" name="usuarioCliente" placeholder="Introduce tu usuario"><br><br>
         <input type="text" name="emailCliente" placeholder="Introduce tu email"><br><br>
         <input type="password" name="contrasennaCliente" placeholder="Introduce tu contraseña" ><br><br>
+        <input type="file" name="fotoDePerfilCliente" accept="image/png, image/jpeg"><br><br>
         <input type="submit" name="Crear" value="Crear Cuenta">
     </form>
 </div>
