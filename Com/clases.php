@@ -66,7 +66,7 @@ class Cliente extends Dato
         $this->setContrasenna($contrasenna);
         $this->setCodigoCookie($codigoCookie);
         $this->setFotoDePerfil($fotoDePerfil);
-        $this->setNombre($nombreCliente);
+        $this->setNombreCliente($nombreCliente);
         $this->setApellidos($apellidos);
     }
 
@@ -96,18 +96,18 @@ class Comic extends Dato
     private string $tituloComic;
     private int $precio;
     private int $cantidad;
-    private string $portadaComic;
-    private string $idCategoriaDeComic;
-
+    private  $portadaComic;
+    private int $idCategoriaDeComic;
+//TODO: Portada comic da errores cuando es NULL(Siempre por ahora) no sé solucionarlo ni con ?string, la solucion por ahora es quitarle el tipo
     public function __construct(int $idComic, string $tituloComic, int $precio,
-                                int $cantidad, string $portadaComic, Categoria $categoria)
+                                int $cantidad,  $portadaComic, int $idCategoriaDeComic)
     {
         $this->setId($idComic);
         $this->setTituloComic($tituloComic);
         $this->setPrecio($precio);
         $this->setCantidad($cantidad);
         $this->setPortadaComic($portadaComic);
-        $this->setIdCategoriaDeComic($categoria);
+        $this->setIdCategoriaDeComic($idCategoriaDeComic);
     }
 
     /*------------------ Funciones GET de todas la propiedades de Cliente -----------------*/
@@ -115,15 +115,15 @@ class Comic extends Dato
     public function getPrecio(): int{return $this->precio;}
     public function getCantidad(): int{return $this->cantidad;}
     public function getPortadaComic(): string{return $this->portadaComic;}
-    public function getIdCategoriaDeComic(): string{return $this->idCategoriaDeComic;}
+    public function getIdCategoriaDeComic(): int{return $this->idCategoriaDeComic;}
     /*------------------ Funciones SET de todas la propiedades de Cliente -----------------*/
     public function setTituloComic(string $tituloComic): void{$this->tituloComic = $tituloComic;}
     public function setPrecio(int $precio): void{$this->precio = $precio;}
     public function setCantidad(int $cantidad): void{$this->cantidad = $cantidad;}
-    public function setPortadaComic(string $portadaComic): void{$this->portadaComic = $portadaComic;}
-    public function setIdCategoriaDeComic(Categoria $categoria): void
+    public function setPortadaComic( $portadaComic): void{$this->portadaComic = $portadaComic;}
+    public function setIdCategoriaDeComic(int $idCategoriaDeComic): void
     {
-        $this->idCategoriaDeComic = $categoria->getId();
+        $this->idCategoriaDeComic = $idCategoriaDeComic;
     }
 }
 
@@ -162,7 +162,3 @@ class Pedido extends Carrito{
     public function setDireccionEnvio(string $direccionEnvio): void{$this->direccionEnvio = $direccionEnvio;}
     public function setFechaConfirmacion(string $fechaConfirmacion): void{$this->fechaConfirmacion = $fechaConfirmacion;}
 }
-
-
-
-

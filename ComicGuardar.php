@@ -11,14 +11,13 @@ $nuevaEntrada = ($idComic == -1);
 if ($nuevaEntrada) {
     $sql = "INSERT INTO Comic (tituloComic,precio,cantidad,portadaComic) VALUES (?,?,?,?)";
     $parametros = [$titloComic,$precio,$cantidad,$portadaComic];
+    $correcto = DAO::ejecutarConsultaActualizar($sql,$parametros);
 } else {
     $sql = "UPDATE Comic SET tituloComic=?,precio=?,cantidad=?,portadaComic=? WHERE idComic=?";
     $parametros = [$titloComic,$precio,$cantidad,$portadaComic,$idComic];
+    $datosNoModificados = DAO::ejecutarConsultaActualizar($sql,$parametros);
 }
 
-
-$correcto = (DAO::ejecutarConsultaActualizar() == 1);
-$datosNoModificados = (DAO::ejecutarConsultaActualizar() == 0);
 
 ?>
 
@@ -35,7 +34,7 @@ $datosNoModificados = (DAO::ejecutarConsultaActualizar() == 0);
 <body>
 
 <?php
-if ($correcto || $datosNoModificados) { ?>
+if ($correcto == 1 || $datosNoModificados == 1) { ?>
     <?php if ($nuevaEntrada) { ?>
         <h1>Inserción completada</h1>
         <p>Se ha insertado correctamente la nueva entrada de <?=$titloComic?>.</p>
@@ -43,7 +42,7 @@ if ($correcto || $datosNoModificados) { ?>
         <h1>Guardado completado</h1>
         <p>Se han guardado correctamente los datos de <?=$titloComic?>.</p>
 
-        <?php if ($datosNoModificados) { ?>
+        <?php if ($datosNoModificados == 0) { ?>
             <p>En realidad, no había modificado nada, pero no está de más que se haya asegurado pulsando el botón de guardar :)</p>
         <?php } ?>
     <?php }

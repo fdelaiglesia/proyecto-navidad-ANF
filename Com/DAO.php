@@ -50,12 +50,41 @@ class DAO
     /*---------- Funciones para Comic ----------*/
     public static function comicEleminarPorId(int $id): bool{
         $sql="DELETE * FROM Comic WHERE idComic=?";
-        $return=DAO::ejecutarConsulta($sql,[$id]);
+        $return=DAO::ejecutarConsultaObtener($sql,[$id]);
         if($return){
             return true;
         }else{
             return false;
         }
+    }
+    private static function comicCrearDesdeRs(array $fila): Comic
+    {
+        return new Comic($fila["idComic"], $fila["tituloComic"], $fila["precio"], $fila["cantidad"], $fila["portadaComic"], $fila["idCategoria"]);
+    }
+
+    public static function comicObtenerTodos(): array
+    {
+        $datos = [];
+        $rs = self::ejecutarConsultaObtener(
+            "SELECT * FROM comic ORDER BY tituloComic",
+            []
+        );
+
+        foreach ($rs as $fila) {
+            $persona = self::comicCrearDesdeRs($fila);
+            array_push($datos, $persona);
+        }
+
+        return $datos;
+    }
+
+    public static function comicObtenerCategoria(int $id): string
+    {
+        $rs= self::ejecutarConsultaObtener(
+            "SELECT nombreCategoria FROM categoria WHERE idCategoria=?",
+            [$id]
+        );
+        return $rs[0]["nombreCategoria"];
     }
 
 
