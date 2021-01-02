@@ -2,7 +2,7 @@
 require_once "Com/DAO.php";
 
 
-$id = (int)$_REQUEST["idComic"];
+$idComic= (int)$_REQUEST["idComic"];
 
 $nuevaEntrada = ($id == -1);
 
@@ -21,7 +21,8 @@ if ($nuevaEntrada) {
     $portadaComic=($comic-> getPortadaComic()==1);
     $comicIdCategoria = $comic->getIdCategoriaDeComic();
     
-}?>
+}
+?>
 
 
 

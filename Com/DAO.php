@@ -66,7 +66,7 @@ class DAO
     {
         $rs = self::ejecutarConsultaObtener(
             "SELECT * FROM Comic WHERE idComic=?",
-            [$id]
+            [$idComic]
         );
         if ($rs) return self::comicCrearDesdeRs($rs[0]);
         else return null;
