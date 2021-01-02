@@ -97,6 +97,6 @@ class DAO
         );
         return $rs[0]["nombreCategoria"];
     }
-
+// Funciones para Cliente
 
     }

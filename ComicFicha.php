@@ -16,8 +16,8 @@ if ($nuevaEntrada) {
 }else{
     $comic = DAO::comicObtenerPorId($id);
     $tituloComic = $comic-> getTituloComic();
-    $precioComic= $comic-> getPrecioComic();
-    $cantidadComic=$comic-> getCantidadComic();
+    $precioComic= $comic-> getPrecio();
+    $cantidadComic=$comic-> getCantidad();
     $portadaComic=($comic-> getPortadaComic()==1);
     $comicIdCategoria = $comic->getIdCategoriaDeComic();
     
@@ -47,7 +47,7 @@ if ($nuevaEntrada) {
         <input type='hidden' name='id' value='<?= $id ?>' />
 
         <label for='titulo'>Titulo</label>
-        <input type='text' name='titulo' value='<?= $ $tituloComic ?>' />
+        <input type='text' name='titulo' value='<?= $tituloComic ?>' />
         <br />
 
         <label for='precio'> Precio</label>

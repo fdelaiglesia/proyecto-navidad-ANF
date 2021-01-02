@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-01-2021 a las 11:44:45
+-- Tiempo de generación: 02-01-2021 a las 16:22:43
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.0
 
@@ -48,13 +48,13 @@ INSERT INTO `categoria` (`idCategoria`, `nombreCategoria`) VALUES
 
 CREATE TABLE `cliente` (
   `idCliente` int(10) NOT NULL,
-  `usuario` varchar(25) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `email` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `contrasenna` varchar(80) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `codigoCookie` varchar(80) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `fotoDePerfil` varchar(40) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `usuarioCliente` varchar(25) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `emailCliente` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `contrasennaCliente` varchar(80) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `codigoCookieCliente` varchar(80) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `fotoDePerfilCliente` varchar(40) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `nombreCliente` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `apellidos` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL
+  `apellidosCliente` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 -- --------------------------------------------------------
@@ -66,8 +66,8 @@ CREATE TABLE `cliente` (
 CREATE TABLE `comic` (
   `idComic` int(10) NOT NULL,
   `tituloComic` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `precio` int(10) NOT NULL,
-  `cantidad` int(10) NOT NULL,
+  `precioComic` int(10) NOT NULL,
+  `cantidadComic` int(10) NOT NULL,
   `portadaComic` varchar(60) COLLATE utf8mb4_spanish2_ci DEFAULT NULL,
   `idCategoria` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
@@ -76,10 +76,10 @@ CREATE TABLE `comic` (
 -- Volcado de datos para la tabla `comic`
 --
 
-INSERT INTO `comic` (`idComic`, `tituloComic`, `precio`, `cantidad`, `portadaComic`, `idCategoria`) VALUES
-(1, 'AquaMan', 18, 50, NULL, 1),
-(2, 'Justice League', 25, 50, NULL, 2),
-(3, 'SpiderMan', 18, 50, NULL, 1);
+INSERT INTO `comic` (`idComic`, `tituloComic`, `precioComic`, `cantidadComic`, `portadaComic`, `idCategoria`) VALUES
+(1, 'AquaMan', 18, 50, '1', 1),
+(2, 'Justice League', 25, 50, '2', 2),
+(3, 'SpiderMan', 18, 50, '3', 1);
 
 -- --------------------------------------------------------
 
@@ -90,8 +90,8 @@ INSERT INTO `comic` (`idComic`, `tituloComic`, `precio`, `cantidad`, `portadaCom
 CREATE TABLE `pedido` (
   `idPedido` int(10) NOT NULL,
   `idCliente` int(10) NOT NULL,
-  `direccionEnvio` varchar(60) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `fechaConfrmacion` datetime NOT NULL
+  `direccionEnvioPedido` varchar(60) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `fechaConfrmacionPedido` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
@@ -110,8 +110,8 @@ ALTER TABLE `categoria`
 --
 ALTER TABLE `cliente`
   ADD PRIMARY KEY (`idCliente`),
-  ADD UNIQUE KEY `usuario` (`usuario`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `usuario` (`usuarioCliente`),
+  ADD UNIQUE KEY `email` (`emailCliente`);
 
 --
 -- Indices de la tabla `comic`
