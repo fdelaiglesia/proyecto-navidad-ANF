@@ -157,4 +157,60 @@ class DAO
                 $_SESSION["txt"]="¡ERROR! No se ha podido crear la cuenta, intentalo otra vez.";
                 redireccionar("UsuarioNuevoFormulario.php");
             }}}//FIN FUNCION DE CREAR NUEVO USUARIO
+        /*---------- Funciones para Categoría ----------*/
+   
+    public static function categoriaEliminar(int $id)
+    {
+        self::ejecutarConsultaActualizar(
+            "DELETE FROM categoria WHERE idCategoria=?;",
+            [$id]
+        );
+    }
+    
+    public static function categoriaCrear(string $nombre)
+    {
+        self::ejecutarConsultaActualizar(
+            "INSERT INTO categoria (nombreCategoria) VALUES (?)",
+            [$nombre]
+        );
+    }
+    private static function categoriaCrearDesdeRs(array $fila): Categoria
+    {
+        return new Categoria($fila["idCategoria"], $fila["nombreCategoria"]);
+    }
+  
+    public static function categoriaObtenerPorId(int $id): ?Categoria
+    {
+        $rs = self::ejecutarConsultaObtener(
+            "SELECT * FROM categoria WHERE idCategoria=?",
+            [$id]
+        );
+        if ($rs) return self::categoriaCrearDesdeRs($rs[0]);
+        else return null;
+    }
+    public static function categoriaActualizar($id, $nombre)
+    {
+        self::ejecutarConsultaActualizar(
+            "UPDATE categoria SET nombreCategoria=? WHERE idCategoria=?",
+            [$nombre, $id]
+        );
+    }
+    public static function categoriaObtenerTodos(): array
+    {
+        $datos = [];
+
+        $rs = self::ejecutarConsultaObtener(
+            "SELECT * FROM categoria ORDER BY nombreCategoria",
+            []
+        );
+
+        foreach ($rs as $fila) {
+            $categoria = self::categoriaCrearDesdeRs($fila);
+            array_push($datos, $categoria);
+        }
+
+        return $datos;
+    }
+
+    
 }// FIN DE LA CLASSE DAO
