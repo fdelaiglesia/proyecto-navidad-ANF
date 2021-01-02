@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost
--- Généré le : mar. 29 déc. 2020 à 16:29
--- Version du serveur :  10.4.11-MariaDB
--- Version de PHP : 7.4.5
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 02-01-2021 a las 11:44:45
+-- Versión del servidor: 10.4.17-MariaDB
+-- Versión de PHP: 8.0.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,30 +18,35 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `comic store`
+-- Base de datos: `comicstore`
 --
-CREATE DATABASE IF NOT EXISTS `comicStore` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
-USE `comicStore`;
-
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Categoria`
+-- Estructura de tabla para la tabla `categoria`
 --
 
-CREATE TABLE `Categoria` (
+CREATE TABLE `categoria` (
   `idCategoria` int(10) NOT NULL,
   `nombreCategoria` varchar(30) COLLATE utf8mb4_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
+--
+-- Volcado de datos para la tabla `categoria`
+--
+
+INSERT INTO `categoria` (`idCategoria`, `nombreCategoria`) VALUES
+(1, 'Accion'),
+(2, 'Fantasia');
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Cliente`
+-- Estructura de tabla para la tabla `cliente`
 --
 
-CREATE TABLE `Cliente` (
+CREATE TABLE `cliente` (
   `idCliente` int(10) NOT NULL,
   `usuario` varchar(25) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `email` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
@@ -55,97 +60,98 @@ CREATE TABLE `Cliente` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Comic`
+-- Estructura de tabla para la tabla `comic`
 --
 
-CREATE TABLE `Comic` (
+CREATE TABLE `comic` (
   `idComic` int(10) NOT NULL,
   `tituloComic` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `precio` int(10) NOT NULL,
   `cantidad` int(10) NOT NULL,
-  `portadaComic` varchar(60) COLLATE utf8mb4_spanish2_ci ,
+  `portadaComic` varchar(60) COLLATE utf8mb4_spanish2_ci DEFAULT NULL,
   `idCategoria` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `comic`
+--
+
+INSERT INTO `comic` (`idComic`, `tituloComic`, `precio`, `cantidad`, `portadaComic`, `idCategoria`) VALUES
+(1, 'AquaMan', 18, 50, NULL, 1),
+(2, 'Justice League', 25, 50, NULL, 2),
+(3, 'SpiderMan', 18, 50, NULL, 1);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Pedido`
+-- Estructura de tabla para la tabla `pedido`
 --
 
-CREATE TABLE `Pedido` (
+CREATE TABLE `pedido` (
   `idPedido` int(10) NOT NULL,
   `idCliente` int(10) NOT NULL,
   `direccionEnvio` varchar(60) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `fechaConfrmacion` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
-
-
-/*-------------------------- Insertar datos en la tablas ---------------------------*/
-
-
-/*Tabla de Comic*/
-
-INSERT INTO `Comic` (`idComic`, `tituloComic`, `precio`, `cantidad`, `portadaComic`, `idCategoria`) VALUES
-(1,'AquaMan',18,50,NULL,1),
-(2,'Justice League',25,50,NULL,2),
-(3,'SpiderMan',18,50,NULL,1);
-
-/*Tabla Cliente*/
-
-/*Tabla Categoria*/
-INSERT INTO `Categoria` (`idCategoria`, `nombreCategoria`) VALUES
-(1,'Accion'),
-(2,'Fantasia');
-
 --
--- Index pour les tables déchargées
+-- Índices para tablas volcadas
 --
 
 --
--- Index pour la table `Categoria`
+-- Indices de la tabla `categoria`
 --
-ALTER TABLE `Categoria`
+ALTER TABLE `categoria`
   ADD PRIMARY KEY (`idCategoria`),
   ADD UNIQUE KEY `nombreCategoria` (`nombreCategoria`);
 
 --
--- Index pour la table `Cliente`
+-- Indices de la tabla `cliente`
 --
-ALTER TABLE `Cliente`
+ALTER TABLE `cliente`
   ADD PRIMARY KEY (`idCliente`),
   ADD UNIQUE KEY `usuario` (`usuario`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Index pour la table `Comic`
+-- Indices de la tabla `comic`
 --
-ALTER TABLE `Comic`
+ALTER TABLE `comic`
   ADD PRIMARY KEY (`idComic`),
-  ADD UNIQUE KEY `portadaComic` (`portadaComic`);
+  ADD UNIQUE KEY `portadaComic` (`portadaComic`),
+  ADD KEY `ForeignKey` (`idCategoria`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT pour la table `Categoria`
+-- AUTO_INCREMENT de la tabla `categoria`
 --
-ALTER TABLE `Categoria`
-  MODIFY `idCategoria` int(10) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `categoria`
+  MODIFY `idCategoria` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT pour la table `Cliente`
+-- AUTO_INCREMENT de la tabla `cliente`
 --
-ALTER TABLE `Cliente`
+ALTER TABLE `cliente`
   MODIFY `idCliente` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `Comic`
+-- AUTO_INCREMENT de la tabla `comic`
 --
-ALTER TABLE `Comic`
-  MODIFY `idComic` int(10) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `comic`
+  MODIFY `idComic` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `comic`
+--
+ALTER TABLE `comic`
+  ADD CONSTRAINT `ForeignKey` FOREIGN KEY (`idCategoria`) REFERENCES `categoria` (`idCategoria`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
