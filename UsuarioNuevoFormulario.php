@@ -18,7 +18,7 @@ session_start();
 <?php session_unset();}?>
 
 <div class="formulario">
-    <form method="post" action="UsuarioNuevoCrear.php">
+    <form method="post" action="UsuarioNuevoCrear.php" enctype="multipart/form-data">
         <input type="text" name="nombreCliente" placeholder="Introduce tu nombre"><br><br>
         <input type="text" name="apellidosCliente" placeholder="Introduce tus apellidos"><br><br>
         <input type="text" name="usuarioCliente" placeholder="Introduce tu usuario"><br><br>

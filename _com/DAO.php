@@ -61,7 +61,19 @@ class DAO
     {
         return new Comic($fila["idComic"], $fila["tituloComic"], $fila["precioComic"], $fila["cantidadComic"], $fila["portadaComic"], $fila["idCategoria"]);
     }
-   
+    public static function comicCrear($titloComic, $precio, $cantidad, $portadaComic, $idCategoria): bool
+    {
+        $sql = "INSERT INTO comic (tituloComic,precioComic,cantidadComic,portadaComic,idCategoria) VALUES (?,?,?,?,?)";
+        $parametros = [$titloComic, $precio, $cantidad, $portadaComic, $idCategoria];
+        $datos = DAO::ejecutarConsultaActualizar($sql, $parametros);
+        return $datos;
+    }
+    public static function comicModificar($tituloComic, $precio, $cantidad, $portadaComic, $idCategoria, $idComic): bool
+    {
+        $sql = "UPDATE comic SET tituloComic=?,precioComic=?,cantidadComic=?,portadaComic=?,idCategoria=? WHERE idComic=?";
+        $parametros = [$tituloComic, $precio, $cantidad, $portadaComic, $idCategoria, $idComic];
+        return $datosNoModificados = DAO::ejecutarConsultaActualizar($sql, $parametros);
+    }
     public static function comicObtenerPorId(int $id): ? Comic
     {
         $rs = self::ejecutarConsultaObtener(
@@ -153,7 +165,7 @@ class DAO
             $sqlInsert= $pdo->prepare($sqlSentencia);
             $sqlInsert->execute([$usuarioCliente,$emailCliente,password_hash($usuarioCliente,PASSWORD_BCRYPT)
                 ,$codigoCookie,$foto,$nombreCliente,$apellidosCliente]);
-           guardarImg($usuarioCliente,$foto,$ruta);
+           DAO::guardarImg($usuarioCliente,$foto,$ruta);
             if($sqlInsert->rowCount()==1){
                 $_SESSION["txt"]="¡La cuenta se ha creado correctamente! Ya pudes iniciar session.";
                 redireccionar("UsuarioNuevoFormulario.php");

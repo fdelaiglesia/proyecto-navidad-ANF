@@ -87,7 +87,11 @@ if ($nuevaEntrada) {
         <?php } ?>
 
     </form>
+    <?php if (!$nuevaEntrada) { ?>
 <img src="<?=$portadaComic?>" style="position: absolute;top: 20px;right: 500px;" height="300" width="200">
+<?php }else{ ?>
+    <img src="https://image.freepik.com/vector-gratis/plantilla-pagina-comic-portada-revista_11554-900.jpg" style="position: absolute;top: 20px;right: 500px;" height="300" width="200">
+    <?php } ?>
     <?php if (!$nuevaEntrada) { ?>
         <br />
         <a href='ComicEliminar.php?idComic=<?= $id ?>'>Eliminar Ficha Comic</a>
