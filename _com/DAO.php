@@ -45,11 +45,11 @@ class DAO
 
         $sentencia=DAO::$pdo->prepare($sql);
         $sentencia->execute($parametros);
-        return $sentencia->rowCoun();
+        return $sentencia->rowCount();
     }
     /*---------- Funciones para Comic ----------*/
     public static function comicEleminarPorId(int $id): bool{
-        $sql="DELETE * FROM Comic WHERE idComic=?";
+        $sql="DELETE FROM comic WHERE idComic=?";
         $return=DAO::ejecutarConsultaObtener($sql,[$id]);
         if($return){
             return true;
@@ -97,6 +97,10 @@ class DAO
         );
         return $rs[0]["nombreCategoria"];
     }
+
+
+
+
 // Funciones para Cliente
 
 

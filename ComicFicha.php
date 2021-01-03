@@ -5,7 +5,7 @@ require_once "_com/DAO.php";
 $idComic = (int)$_REQUEST["idComic"];
 
 $nuevaEntrada = ($idComic == -1);
-
+$categorias = DAO::categoriaObtenerTodos();
 if ($nuevaEntrada) { 
     $tituloComic = "<introduzca el titulo del comic>";
     $precioComic="<introduzca el precio>";
@@ -15,10 +15,11 @@ if ($nuevaEntrada) {
 
 }else{
     $comic = DAO::comicObtenerPorId($idComic);
+    $id = $comic->getId();
     $tituloComic = $comic-> getTituloComic();
     $precioComic= $comic-> getPrecioComic();
     $cantidadComic=$comic-> getCantidadComic();
-    $portadaComic=($comic-> getPortadaComic()==1);
+    $portadaComic=$comic-> getPortadaComic();
     $comicIdCategoria = $comic->getIdCategoriaDeComic();
     
 }
@@ -45,24 +46,24 @@ if ($nuevaEntrada) {
 
     <form method='post' action='ComicGuardar.php'>
 
-        <input type='hidden' name='id' value='<?= $id ?>' />
+        <input type='hidden' name='idComic' value='<?= $id ?>' />
 
         <label for='titulo'>Titulo</label>
-        <input type='text' name='titulo' value='<?= $tituloComic ?>' />
+        <input type='text' name='tituloComic' value='<?= $tituloComic ?>' />
         <br />
 
         <label for='precio'> Precio</label>
-        <input type='text' name='precio' value='<?= $precioComic ?>' />
+        <input type='text' name='precioComic' value='<?= $precioComic ?>' />
         <br />
 
         <label for='cantidad'> Cantidad</label>
-        <input type='text' name='cantidad' value='<?= $cantidadComic ?>' />
+        <input type='text' name='cantidadComic' value='<?= $cantidadComic ?>' />
         <br />
         <label for='estrella'>Portada</label>
-        <input type='checkbox' name='estrella' <?= $portadaComic ? "checked" : "" ?> />
+        <input type='text' name='portadaComic' value='<?= $portadaComic ?>'>
         <br />
         <label for='comicIdCategoria'>Categoría</label>
-        <select name='categoriaId'>
+        <select name='idCategoria'>
             <?php
             foreach ($categorias as $categoria) {
                 $categoriaId = (int) $categoria->getId();

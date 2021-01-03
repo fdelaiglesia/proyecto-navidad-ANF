@@ -40,12 +40,16 @@ $comics = DAO::comicObtenerTodos();
             <td>
             <p><?= $comic->getPrecioComic();?>€</p>
             </td>
+            <td>
+            <a href='ComicEliminar.php?idComic=<?=$comic->getId()?>'> (X)</a>
+            </td>    
         </tr>
 
     <?php } ?>
 
 </table>
-
+<a href="ComicFicha.php?idComic=-1" >Añadir comic</a>
+<br>
 <a href='CategoriaListado.php'>Volver al listado de Categorias.</a>
 
 </body>

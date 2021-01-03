@@ -3,18 +3,19 @@ require_once "_com/DAO.php";
 
 $idComic = (int)$_REQUEST["idComic"];
 $titloComic= (string)$_REQUEST["tituloComic"];
-$precio=(int)$_REQUEST["precio"];
-$cantidad=(int)$_REQUEST["cantidad"];
+$precio=(int)$_REQUEST["precioComic"];
+$cantidad=(int)$_REQUEST["cantidadComic"];
 $portadaComic=(string)$_REQUEST["portadaComic"];
+$idCategoria=(int)$_REQUEST["idCategoria"];
 $nuevaEntrada = ($idComic == -1);
-
+$correcto = '';
 if ($nuevaEntrada) {
-    $sql = "INSERT INTO Comic (tituloComic,precio,cantidad,portadaComic) VALUES (?,?,?,?)";
-    $parametros = [$titloComic,$precio,$cantidad,$portadaComic];
+    $sql = "INSERT INTO comic (tituloComic,precioComic,cantidadComic,portadaComic,idCategoria) VALUES (?,?,?,?,?)";
+    $parametros = [$titloComic,$precio,$cantidad,$portadaComic,$idCategoria];
     $correcto = DAO::ejecutarConsultaActualizar($sql,$parametros);
 } else {
-    $sql = "UPDATE Comic SET tituloComic=?,precio=?,cantidad=?,portadaComic=? WHERE idComic=?";
-    $parametros = [$titloComic,$precio,$cantidad,$portadaComic,$idComic];
+    $sql = "UPDATE comic SET tituloComic=?,precioComic=?,cantidadComic=?,portadaComic=?,idCategoria=? WHERE idComic=?";
+    $parametros = [$titloComic,$precio,$cantidad,$portadaComic,$idCategoria,$idComic];
     $datosNoModificados = DAO::ejecutarConsultaActualizar($sql,$parametros);
 }
 
