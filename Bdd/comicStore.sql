@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-01-2021 a las 16:22:43
+-- Tiempo de generación: 03-01-2021 a las 17:04:14
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.0
 
@@ -16,9 +16,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-DROP DATABASE IF EXISTS comicStore;
-CREATE DATABASE  comicStore;
-USE  comicStore;
+
 --
 -- Base de datos: `comicstore`
 --
@@ -70,7 +68,7 @@ CREATE TABLE `comic` (
   `tituloComic` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `precioComic` int(10) NOT NULL,
   `cantidadComic` int(10) NOT NULL,
-  `portadaComic` varchar(60) COLLATE utf8mb4_spanish2_ci DEFAULT NULL,
+  `portadaComic` varchar(260) COLLATE utf8mb4_spanish2_ci DEFAULT NULL,
   `idCategoria` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
@@ -81,7 +79,7 @@ CREATE TABLE `comic` (
 INSERT INTO `comic` (`idComic`, `tituloComic`, `precioComic`, `cantidadComic`, `portadaComic`, `idCategoria`) VALUES
 (1, 'AquaMan', 18, 50, '1', 1),
 (2, 'Justice League', 25, 50, '2', 2),
-(3, 'SpiderMan', 18, 50, '3', 1);
+(7, 'Spiderman', 12, 1, 'https://www.universomarvel.com/las-portadas-de-amazing-spider-man-800/amazing_spider-man_vol_1_800_dodson_variant/', 1);
 
 -- --------------------------------------------------------
 
@@ -143,7 +141,7 @@ ALTER TABLE `cliente`
 -- AUTO_INCREMENT de la tabla `comic`
 --
 ALTER TABLE `comic`
-  MODIFY `idComic` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idComic` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas
