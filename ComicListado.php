@@ -21,20 +21,32 @@ $comics = DAO::comicObtenerTodos();
     <tr>
         <th>Comic</th>
         <th>Categoría</th>
+        <th>Unidades</th>
+        <th>Precio</th>
     </tr>
 
     <?php
     foreach ($comics as $comic) { ?>
         <tr>
             <td>
-              <?= $comic->getTituloComic();?>
+             <a href="ComicFicha.php?idComic=<?=$comic->getId();?>" ><?= $comic->getTituloComic();?></a>
             </td>
             <td>
               <?php echo DAO::comicObtenerCategoria($comic->getIdCategoriaDeComic());?>
             </td>
+            <td>
+            <?= $comic->getCantidadComic();?>
+            </td>
+            <td>
+            <p><?= $comic->getPrecioComic();?>€</p>
+            </td>
         </tr>
+
     <?php } ?>
 
 </table>
+
+<a href='CategoriaListado.php'>Volver al listado de Categorias.</a>
+
 </body>
 </html>
