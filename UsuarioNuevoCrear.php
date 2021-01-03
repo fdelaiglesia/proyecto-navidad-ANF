@@ -10,16 +10,26 @@ if(isset($_POST["Crear"])){
         $_SESSION["txt"]="¡Asegurate de rellenar todos los campos!";
         redireccionar("UsuarioNuevoFormulario.php");
     }else{
+        $emailCliente=(string)$_POST["emailCliente"];
         $usuarioCliente=(string)$_POST["usuarioCliente"];
         $contrasennaCliente=(string)$_POST["contrasennaCliente"];
         $nombreCliente=(string)$_POST["nombreCliente"];
         $apellidosCliente=(string)$_POST["apellidosCliente"];
-       // $foto= $_FILES["fotoDePerfilCliente"]["name"];
-        //$ruta= $_FILES["fotoDePerfilCliente"]["tmp_name"];
-        $informacionUsuario=array("usuarioCliente"=>$usuarioCliente,"contrasennaCliente"=>$contrasennaCliente,
-            "nombreCliente"=>$nombreCliente,"apellidosCliente"=>$apellidosCliente);
+        $foto= $_FILES["fotoDePerfilCliente"]["name"];
+        $ruta= $_FILES["fotoDePerfilCliente"]["tmp_name"];
+
+        /* CARGAR EL ARRAY CON DATOS*/
+        $informacionUsuario= array(
+            "usuarioCliente"=>$usuarioCliente,
+            "contrasennaCliente"=>$contrasennaCliente,
+            "emailCliente"=>$emailCliente,
+            "nombreCliente"=>$nombreCliente,
+            "apellidosCliente"=>$apellidosCliente,
+            "foto"=>$foto,
+            "ruta"=>$ruta
+        );
+
         DAO::crearUsuario($informacionUsuario);
-       // crearUsuario($informacionUsuario);
 
 
     }

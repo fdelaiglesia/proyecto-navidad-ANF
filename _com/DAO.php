@@ -32,55 +32,37 @@ class DAO
     }
 
     /*---------- Funciones generales ----------*/
-    private static function ejecutarConsultaObtener(string $sql, array $parametros): ?array
-    {
+    public static function ejecutarConsultaObtener(string $sql, array $parametros): ?array{
         if (!isset(DAO::$pdo)) DAO::$pdo = DAO::obtenerPdoConexionBd();
 
-        $sentencia = DAO::$pdo->prepare($sql);
+        $sentencia=DAO::$pdo->prepare($sql);
         $sentencia->execute($parametros);
-        return $sentencia->fetchAll();
+        $resultado=$sentencia->fetchAll();
+        return $resultado;
     }
-    private static function ejecutarConsultaActualizar(string $sql, array $parametros): int
-    {
+    public static function ejecutarConsultaActualizar(string $sql, array $parametros): int {
         if (!isset(DAO::$pdo)) DAO::$pdo = DAO::obtenerPdoConexionBd();
 
-        $sentencia = DAO::$pdo->prepare($sql);
+        $sentencia=DAO::$pdo->prepare($sql);
         $sentencia->execute($parametros);
         return $sentencia->rowCount();
     }
     /*---------- Funciones para Comic ----------*/
-
-
+    public static function comicEleminarPorId(int $id): bool{
+        $sql="DELETE FROM comic WHERE idComic=?";
+        $return=DAO::ejecutarConsultaObtener($sql,[$id]);
+        if($return){
+            return true;
+        }else{
+            return false;
+        }
+    }
     private static function comicCrearDesdeRs(array $fila): Comic
     {
         return new Comic($fila["idComic"], $fila["tituloComic"], $fila["precioComic"], $fila["cantidadComic"], $fila["portadaComic"], $fila["idCategoria"]);
     }
-
-    public static function comicEleminarPorId(int $id): bool
-    {
-        $sql = "DELETE FROM comic WHERE idComic=?";
-        $return = DAO::ejecutarConsultaObtener($sql, [$id]);
-        if ($return) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static function comicCrear($titloComic, $precio, $cantidad, $portadaComic, $idCategoria): bool
-    {
-        $sql = "INSERT INTO comic (tituloComic,precioComic,cantidadComic,portadaComic,idCategoria) VALUES (?,?,?,?,?)";
-        $parametros = [$titloComic, $precio, $cantidad, $portadaComic, $idCategoria];
-        $datos = DAO::ejecutarConsultaActualizar($sql, $parametros);
-        return $datos;
-    }
-    public static function comicModificar($tituloComic, $precio, $cantidad, $portadaComic, $idCategoria, $idComic): bool
-    {
-        $sql = "UPDATE comic SET tituloComic=?,precioComic=?,cantidadComic=?,portadaComic=?,idCategoria=? WHERE idComic=?";
-        $parametros = [$tituloComic, $precio, $cantidad, $portadaComic, $idCategoria, $idComic];
-        return $datosNoModificados = DAO::ejecutarConsultaActualizar($sql, $parametros);
-    }
-    public static function comicObtenerPorId(int $id): ?Comic
+   
+    public static function comicObtenerPorId(int $id): ? Comic
     {
         $rs = self::ejecutarConsultaObtener(
             "SELECT * FROM Comic WHERE idComic=?",
@@ -89,7 +71,7 @@ class DAO
         if ($rs) return self::comicCrearDesdeRs($rs[0]);
         else return null;
     }
-
+   
 
     public static function comicObtenerTodos(): array
     {
@@ -109,7 +91,7 @@ class DAO
 
     public static function comicObtenerCategoria(int $id): string
     {
-        $rs = self::ejecutarConsultaObtener(
+        $rs= self::ejecutarConsultaObtener(
             "SELECT nombreCategoria FROM categoria WHERE idCategoria=?",
             [$id]
         );
@@ -119,72 +101,68 @@ class DAO
 
 
 
-    // Funciones para Cliente
+// Funciones para Cliente
 
 
-    /*--------------------------- FUNCIONES PARA CLIENTE ------------------------------*/
+/*--------------------------- FUNCIONES PARA CLIENTE ------------------------------*/
     public static function obtenerCliente(string $usuarioCliente, string $emailCliente): ?array
     {
         $pdo = DAO::obtenerPdoConexionBD();
-        $sql = "SELECT * FROM cliente WHERE usuarioCliente='$usuarioCliente' OR emailCliente='$emailCliente'";
-        $select = $pdo->prepare($sql);
+        $sql="SELECT * FROM cliente WHERE usuarioCliente='$usuarioCliente' OR emailCliente='$emailCliente'";
+        $select= $pdo->prepare($sql);
         $select->execute([]);
-        $resultados = $select->fetchAll();
+        $resultados= $select->fetchAll();
         return $resultados;
     }
 
-    public static function guardarImg($usuarioCliente, $foto, $ruta)
-    {
+    public static function guardarImg($usuarioCliente,$foto,$ruta){
         //foto: name del de la foto
         // ruta: ruta temporal
         // usuario: usuario de que vamos a modificar
 
-        $destino = "FotosDePerfil/" . $foto;
+        $destino= "FotosDePerfil/".$foto;
         copy($ruta, $destino);
-        $extension = pathinfo($foto, PATHINFO_EXTENSION);
-        $nombreNuevo = "$usuarioCliente" . "." . "$extension";
-        rename("FotosDePerfil/$foto", "FotosDePerfil/" . "$nombreNuevo");
+        $extension=pathinfo($foto,PATHINFO_EXTENSION);
+        $nombreNuevo="$usuarioCliente"."."."$extension";
+        rename("FotosDePerfil/$foto","FotosDePerfil/"."$nombreNuevo");
         /*------- Insertar en la BDD ---------*/
-        $pdo = DAO::obtenerPdoConexionBD();
-        $sqlSentencia = "UPDATE cliente SET fotoDePerfilCliente=? WHERE idCliente=?";
-        $sqlUpdate = $pdo->prepare($sqlSentencia);
-        $sqlUpdate->execute([$nombreNuevo, $usuarioCliente]);
+        $pdo=DAO::obtenerPdoConexionBD();
+        $sqlSentencia="UPDATE cliente SET fotoDePerfilCliente=? WHERE idCliente=?";
+        $sqlUpdate=$pdo->prepare($sqlSentencia);
+        $sqlUpdate->execute([$nombreNuevo,$usuarioCliente]);
     }
     public static function crearUsuario(array $informacionUsuario)
     {
-        $pdo = DAO::obtenerPdoConexionBD();
+        $pdo=DAO::obtenerPdoConexionBD();
         /*CRAGAR LOS DATOS DEL ARRAY*/
-        $codigoCookie = (string)$informacionUsuario["codigoCookieCliente"];
-        $nombreCliente = (string)$informacionUsuario["nombreCliente"];
-        $apellidosCliente = (string)$informacionUsuario["apellidosCliente"];
-        $usuarioCliente = (string)$informacionUsuario["usuarioCliente"];
-        $emailCliente = (string)$informacionUsuario["emailCliente"];
-        $foto = "eyy";
-        // $ruta=$informacionUsuario["ruta"];
-        $verificarIdCliente = DAO::obtenerCliente($usuarioCliente, $emailCliente);
+        $codigoCookie=(string)NULL;
+        $nombreCliente=(string)$informacionUsuario["nombreCliente"];
+        $apellidosCliente=(string)$informacionUsuario["apellidosCliente"];
+        $usuarioCliente=(string)$informacionUsuario["usuarioCliente"];
+        $emailCliente=(string)$informacionUsuario["emailCliente"];
+        $foto=$informacionUsuario["foto"];
+       $ruta=$informacionUsuario["ruta"];
+        $verificarIdCliente=DAO::obtenerCliente($usuarioCliente,$emailCliente);
 
-        if (!empty($verificarIdCliente)) {
-            $_SESSION["txt"] = "¡ERROR! El usuario introducido ya existe.";
+        if(!empty($verificarIdCliente)){
+            $_SESSION["txt"]="¡ERROR! El usuario introducido ya existe.";
             redireccionar("UsuarioNuevoFormulario.php");
-        } else {
-            $sqlSentencia = "INSERT INTO cliente (usuarioCliente,emailCliente,contrasennaCliente,
+        }else{
+            $sqlSentencia="INSERT INTO cliente (usuarioCliente,emailCliente,contrasennaCliente,
                      codigoCookieCliente,fotoDePerfilCliente,nombreCliente,apellidosCliente) VALUES (?,?,?,?,?,?,?)";
-            $sqlInsert = $pdo->prepare($sqlSentencia);
-            $sqlInsert->execute([
-                $usuarioCliente, $emailCliente, password_hash($usuarioCliente, PASSWORD_BCRYPT), $codigoCookie, $foto, $nombreCliente, $apellidosCliente
-            ]);
-            //  guardarImg($usuarioCliente,$foto,$ruta);
-            if ($sqlInsert->rowCount() == 1) {
-                $_SESSION["txt"] = "¡La cuenta se ha creado correctamente! Ya pudes iniciar session.";
+            $sqlInsert= $pdo->prepare($sqlSentencia);
+            $sqlInsert->execute([$usuarioCliente,$emailCliente,password_hash($usuarioCliente,PASSWORD_BCRYPT)
+                ,$codigoCookie,$foto,$nombreCliente,$apellidosCliente]);
+           guardarImg($usuarioCliente,$foto,$ruta);
+            if($sqlInsert->rowCount()==1){
+                $_SESSION["txt"]="¡La cuenta se ha creado correctamente! Ya pudes iniciar session.";
                 redireccionar("UsuarioNuevoFormulario.php");
-            } else {
-                $_SESSION["txt"] = "¡ERROR! No se ha podido crear la cuenta, intentalo otra vez.";
+            }else{
+                $_SESSION["txt"]="¡ERROR! No se ha podido crear la cuenta, intentalo otra vez.";
                 redireccionar("UsuarioNuevoFormulario.php");
-            }
-        }
-    } //FIN FUNCION DE CREAR NUEVO USUARIO
-    /*---------- Funciones para Categoría ----------*/
-
+            }}}//FIN FUNCION DE CREAR NUEVO USUARIO
+        /*---------- Funciones para Categoría ----------*/
+   
     public static function categoriaEliminar(int $id)
     {
         self::ejecutarConsultaActualizar(
@@ -192,7 +170,7 @@ class DAO
             [$id]
         );
     }
-
+    
     public static function categoriaCrear(string $nombre)
     {
         self::ejecutarConsultaActualizar(
@@ -204,7 +182,7 @@ class DAO
     {
         return new Categoria($fila["idCategoria"], $fila["nombreCategoria"]);
     }
-
+  
     public static function categoriaObtenerPorId(int $id): ?Categoria
     {
         $rs = self::ejecutarConsultaObtener(
@@ -237,4 +215,6 @@ class DAO
 
         return $datos;
     }
+
+    
 }// FIN DE LA CLASSE DAO
