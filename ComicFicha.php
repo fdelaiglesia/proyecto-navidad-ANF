@@ -6,22 +6,20 @@ $idComic = (int)$_REQUEST["idComic"];
 
 $nuevaEntrada = ($idComic == -1);
 $categorias = DAO::categoriaObtenerTodos();
-if ($nuevaEntrada) { 
-    $tituloComic = "<introduzca el titulo del comic>";
-    $precioComic="<introduzca el precio>";
-    $cantidadComic="<introduzca una cantidad>";
-    $portadaComic=false;
+if ($nuevaEntrada) {
+    $tituloComic = "";
+    $precioComic = "";
+    $cantidadComic = "";
+    $portadaComic = "";
     $comicIdCategoria = 0;
-
-}else{
+} else {
     $comic = DAO::comicObtenerPorId($idComic);
     $id = $comic->getId();
-    $tituloComic = $comic-> getTituloComic();
-    $precioComic= $comic-> getPrecioComic();
-    $cantidadComic=$comic-> getCantidadComic();
-    $portadaComic=$comic-> getPortadaComic();
+    $tituloComic = $comic->getTituloComic();
+    $precioComic = $comic->getPrecioComic();
+    $cantidadComic = $comic->getCantidadComic();
+    $portadaComic = $comic->getPortadaComic();
     $comicIdCategoria = $comic->getIdCategoriaDeComic();
-    
 }
 ?>
 
@@ -46,21 +44,21 @@ if ($nuevaEntrada) {
 
     <form method='post' action='ComicGuardar.php'>
 
-        <input type='hidden' name='idComic' value='<?= $id ?>' />
+        <input type='hidden' name='idComic' value='<?= $idComic ?>' />
 
         <label for='titulo'>Titulo</label>
-        <input type='text' name='tituloComic' value='<?= $tituloComic ?>' />
+        <input type='text' name='tituloComic' value='<?= $tituloComic ?>' placeholder="Titulo del comic" />
         <br />
 
         <label for='precio'> Precio</label>
-        <input type='text' name='precioComic' value='<?= $precioComic ?>' />
+        <input type='text' name='precioComic' value='<?= $precioComic ?>' placeholder="Precio del comic" />
         <br />
 
         <label for='cantidad'> Cantidad</label>
-        <input type='text' name='cantidadComic' value='<?= $cantidadComic ?>' />
+        <input type='text' name='cantidadComic' value='<?= $cantidadComic ?>' placeholder="Cantidad de comics" />
         <br />
         <label for='estrella'>Portada</label>
-        <input type='text' name='portadaComic' value='<?= $portadaComic ?>'>
+        <input type='text' name='portadaComic' value='<?= $portadaComic ?>' placeholder="Portada del comic" />
         <br />
         <label for='comicIdCategoria'>Categoría</label>
         <select name='idCategoria'>
@@ -78,7 +76,7 @@ if ($nuevaEntrada) {
         </select>
         <br />
 
-     
+
 
         <br />
 
@@ -89,10 +87,10 @@ if ($nuevaEntrada) {
         <?php } ?>
 
     </form>
-
+<img src="<?=$portadaComic?>" style="position: absolute;top: 20px;right: 500px;" height="300" width="200">
     <?php if (!$nuevaEntrada) { ?>
         <br />
-        <a href='ComicEliminar.php?id=<?= $id ?>'>Eliminar Ficha Comic</a>
+        <a href='ComicEliminar.php?idComic=<?= $id ?>'>Eliminar Ficha Comic</a>
     <?php } ?>
 
     <br />
@@ -103,4 +101,3 @@ if ($nuevaEntrada) {
 </body>
 
 </html>
-
