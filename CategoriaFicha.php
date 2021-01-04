@@ -37,7 +37,7 @@ $idCategoria = (int)$_REQUEST["id"];
 
 <form method='post' action='CategoriaGuardar.php'>
 
-<input type='hidden' name='id' value='<?=$id?>' />
+<input type='hidden' name='id' value='<?=$idCategoria?>' />
 
     <label for='nombre'>Nombre</label>
 	<input type='text' name='nombre' value='<?=$nombreCategoria?>' />
@@ -57,7 +57,7 @@ $idCategoria = (int)$_REQUEST["id"];
 
 <?php if (!$nuevaEntrada) { ?>
     <br />
-    <a href='CategoriaEliminar.php?id=<?=$id?>'>Eliminar categoría</a>
+    <a href='CategoriaEliminar.php?id=<?=$idCategoria?>'>Eliminar categoría</a>
 <?php } ?>
 
 <br />

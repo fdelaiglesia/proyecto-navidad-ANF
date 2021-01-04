@@ -174,21 +174,29 @@ class DAO
                 redireccionar("UsuarioNuevoFormulario.php");
             }}}//FIN FUNCION DE CREAR NUEVO USUARIO
         /*---------- Funciones para Categoría ----------*/
-   
-    public static function categoriaEliminar(int $id)
-    {
-        self::ejecutarConsultaActualizar(
-            "DELETE FROM categoria WHERE idCategoria=?;",
-            [$id]
-        );
+
+    public static function categoriaEliminarPorId(int $id): bool{
+        $sql="DELETE FROM categoria WHERE idCategoria=?";
+        $return=DAO::ejecutarConsultaObtener($sql,[$id]);
+        if($return){
+            return true;
+        }else{
+            return false;
+        }
     }
-    
-    public static function categoriaCrear(string $nombre)
+
+    public static function categoriaCrear($nombreCategoria): bool
     {
-        self::ejecutarConsultaActualizar(
-            "INSERT INTO categoria (nombreCategoria) VALUES (?)",
-            [$nombre]
-        );
+        $sql = "INSERT INTO categoria (nombreCategoria) VALUES (?)";
+        $parametros = [$nombreCategoria];
+        $datos = DAO::ejecutarConsultaActualizar($sql, $parametros);
+        return $datos;
+    }
+    public static function categoriaModificar($nombreCategoria,$idCategoria): bool
+    {
+        $sql = "UPDATE categoria SET nombreCategoria=? WHERE idCategoria=?";
+        $parametros = [$nombreCategoria, $idCategoria];
+        return $datosNoModificados = DAO::ejecutarConsultaActualizar($sql, $parametros);
     }
     private static function categoriaCrearDesdeRs(array $fila): Categoria
     {

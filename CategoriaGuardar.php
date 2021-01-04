@@ -1,59 +1,68 @@
 <?php
 require_once "_com/DAO.php";
 
-$id = (int)$_REQUEST["idCategoria"];
-$nombre = $_REQUEST["nombreCategoria"];
+
+$idCategoria = (int)$_REQUEST["id"];
+$nombreCategoria= (string)$_REQUEST["nombre"];
 
 
-$nuevaEntrada = ($id == -1);
 
+$nuevaEntrada = ($idCategoria == -1);
+$correcto = "";
+$datosNoModificados = "";
 if ($nuevaEntrada) {
-	$nuevaInsercion = DAO::categoriaCrear($nombreCategoria);
+    $correcto = DAO::categoriaCrear($nombreCategoria);
 } else {
-	$actualizar = DAO::categoriaActualizar($id, $nombreCategoria);
+    $datosNoModificados = DAO::categoriaModificar($idCategoria,$nombreCategoria);
 }
 
+
 ?>
+
 
 
 <html>
 
 <head>
-	<meta charset='UTF-8'>
+    <meta charset='UTF-8'>
 </head>
 
 
 
 <body>
-	<?php
 
-	if ($nuevaInsercion > 0 || $actualizar > 0) { ?>
-		<?php if ($nuevaEntrada) { ?>
-			<h1>Inserción completada</h1>
-			<p>Se ha insertado correctamente la nueva entrada de <?= $nombreCategoria ?>.</p>
-		<?php } else { ?>
-			<h1>Guardado completado</h1>
-			<p>Se han guardado correctamente los datos de <?= $nombreCategoria ?>.</p>
-		<?php }
-		?>
+<?php
+if ($correcto|| $datosNoModificados) { ?>
+    <?php if ($nuevaEntrada) { ?>
+        <h1>Inserción completada</h1>
+        <p>Se ha insertado correctamente la nueva entrada de <?= $nombreCategoria ?>.</p>
+    <?php } else { ?>
+        <h1>Guardado completado</h1>
+        <p>Se han guardado correctamente los datos de <?= $nombreCategoria ?>.</p>
 
-	<?php
-	} else {
-	?>
+        <?php if ($datosNoModificados == 0) { ?>
+            <p>En realidad, no había modificado nada, pero no está de más que se haya asegurado pulsando el botón de guardar :)</p>
+        <?php } ?>
+    <?php }
+    ?>
 
-		<?php if ($nuevaEntrada) { ?>
-			<h1>Error en la creación.</h1>
-			<p>No se ha podido crear la nueva categoría.</p>
-		<?php } else { ?>
-			<h1>Error en la modificación.</h1>
-			<p>No se han podido guardar los datos de la categoría.</p>
-		<?php } ?>
+    <?php
+} else {
+    ?>
 
-	<?php
-	}
-	?>
+    <?php if ($nuevaEntrada) { ?>
+        <h1>Error en la creación.</h1>
+        <p>No se ha podido crear la nueva entrada.</p>
+    <?php } else { ?>
+        <h1>Error en la modificación.</h1>
+        <p>No se han podido guardar los datos del la categoria <?= $nombreCategoria ?>.</p>
+    <?php } ?>
 
-	<a href='CategoriaListado.php'>Volver al listado de categorías.</a>
+    <?php
+}
+?>
+
+<a href='ComicListado.php'>Volver al listado de Comics.</a>
 
 </body>
 
