@@ -200,7 +200,7 @@ class DAO
         //usuario: usuario de que vamos a modificar
 
         $destino= "uploads/$foto";
-        copy($ruta, $destino);
+        move_uploaded_file($ruta, $destino);
         $extension=pathinfo($foto,PATHINFO_EXTENSION);
         $nombreNuevo="$usuarioCliente"."."."$extension";
         rename("uploads/$foto","uploads/"."$nombreNuevo");
