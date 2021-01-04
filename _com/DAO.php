@@ -219,6 +219,7 @@ class DAO
         $apellidosCliente=(string)$informacionUsuario["apellidosCliente"];
         $usuarioCliente=(string)$informacionUsuario["usuarioCliente"];
         $emailCliente=(string)$informacionUsuario["emailCliente"];
+        $contrasennaCliente=(string)$informacionUsuario["contrasennaCliente"];
         $foto=$informacionUsuario["foto"];
        $ruta=$informacionUsuario["ruta"];
         $verificarIdCliente=DAO::obtenerCliente($usuarioCliente,$emailCliente);
@@ -230,7 +231,7 @@ class DAO
             $sqlSentencia="INSERT INTO cliente (usuarioCliente,emailCliente,contrasennaCliente,
                      codigoCookieCliente,fotoDePerfilCliente,nombreCliente,apellidosCliente) VALUES (?,?,?,?,?,?,?)";
             $sqlInsert= $pdo->prepare($sqlSentencia);
-            $sqlInsert->execute([$usuarioCliente,$emailCliente,password_hash($usuarioCliente,PASSWORD_BCRYPT)
+            $sqlInsert->execute([$usuarioCliente,$emailCliente,password_hash($contrasennaCliente,PASSWORD_BCRYPT)
                 ,$codigoCookie,$foto,$nombreCliente,$apellidosCliente]);
             DAO::guardarImg($usuarioCliente,$foto,$ruta);
             if($sqlInsert->rowCount()==1){
