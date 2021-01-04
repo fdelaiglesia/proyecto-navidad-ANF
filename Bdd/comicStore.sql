@@ -17,6 +17,9 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+DROP DATABASE IF EXISTS comicStore;
+CREATE DATABASE  comicStore;
+USE  comicStore;
 --
 -- Base de datos: `comicstore`
 --
@@ -52,7 +55,7 @@ CREATE TABLE `cliente` (
   `emailCliente` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `contrasennaCliente` varchar(80) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `codigoCookieCliente` varchar(80) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `fotoDePerfilCliente` varchar(40) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `fotoDePerfilCliente` varchar(80) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `nombreCliente` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `apellidosCliente` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;

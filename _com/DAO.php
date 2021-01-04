@@ -32,6 +32,63 @@ class DAO
     }
 
     /*---------- Funciones generales ----------*/
+    public static function anotarCookieEnBDD( $codigoCookie, $idUsuario): bool {
+        $pdo=DAO::obtenerPdoConexionBD();
+        if($codigoCookie=="NULL"){
+            $codigoCookie=NULL;
+        }
+        $sqlSentencia="UPDATE cliente SET codigoCookieCliente=? WHERE idCliente=?";
+
+        $sqlUpdate=$pdo->prepare($sqlSentencia);
+        $sqlUpdate->execute([$codigoCookie,$idUsuario]);
+        if($sqlUpdate->rowCount()==1){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+    public static function borrarCookieRecordar(array $arrayUsuario)
+    {
+        // Eliminar el código cookie de nuestra BD.
+        $idCliente= $arrayUsuario[0]["idCliente"];
+        DAO::anotarCookieEnBDD("NULL",$idCliente);
+        // Pedir borrar cookie (setcookie con tiempo time() - negativo...)
+        setcookie("identificador","",time()-86400);
+        setcookie("clave","",time()-86400);
+    }
+    public static function cerrarSesion()
+    {
+        $arrayUsuario=DAO::obtenerClienteConUsuario((string)$_SESSION["usuarioCliente"]);
+        DAO::borrarCookieRecordar($arrayUsuario);
+        session_unset();
+        session_destroy();
+        redireccionar("SessionInicioFormulario.php");
+    }
+    public static function generarCookieRecordar(array $arrayUsuario)
+    {
+        // Creamos un código cookie muy complejo (no necesariamente único).
+        $codigoCookie = generarCadenaAleatoria(32); // Random...
+        $idCliente= $arrayUsuario[0]["idCliente"];
+        // actualizar el codigoCookie en la BDD
+        DAO::anotarCookieEnBDD($codigoCookie,$idCliente);
+        // TODO Para una seguridad óptima convendría anotar en la BD la fecha de caducidad de la cookie y no aceptar ninguna cookie pasada dicha fecha.
+        // anotar la cookie en el navegador
+        $usuarioCliente=$arrayUsuario[0]["usuarioCliente"];
+        $valorCookie=$codigoCookie;
+        setcookie("usuarioCliente",$usuarioCliente,time()+86400);
+        setcookie("clave",$valorCookie,time()+86400);
+
+    }
+    public static function marcarSesionComoIniciada($arrayUsuario)
+{
+    $_SESSION["idCliente"]=$arrayUsuario[0]["idCliente"];
+    $_SESSION["usuarioCliente"]=$arrayUsuario[0]["usuarioCliente"];
+    $_SESSION["nombreCliente"] =$arrayUsuario[0]["nombreCliente"];
+    $_SESSION["apellidosCliente"]=$arrayUsuario[0]["apellidosCliente"];
+    //redireccionar("");
+}
+
     public static function ejecutarConsultaObtener(string $sql, array $parametros): ?array{
         if (!isset(DAO::$pdo)) DAO::$pdo = DAO::obtenerPdoConexionBd();
 
@@ -47,6 +104,7 @@ class DAO
         $sentencia->execute($parametros);
         return $sentencia->rowCount();
     }
+
     /*---------- Funciones para Comic ----------*/
     public static function comicEleminarPorId(int $id): bool{
         $sql="DELETE FROM comic WHERE idComic=?";
@@ -117,6 +175,15 @@ class DAO
 
 
 /*--------------------------- FUNCIONES PARA CLIENTE ------------------------------*/
+    public static function obtenerClienteConUsuario(string $usuarioCliente): ?array
+    {
+        $pdo = DAO::obtenerPdoConexionBD();
+        $sql="SELECT * FROM cliente WHERE usuarioCliente='$usuarioCliente'";
+        $select= $pdo->prepare($sql);
+        $select->execute([]);
+        $resultados= $select->fetchAll();
+        return $resultados;
+    }
     public static function obtenerCliente(string $usuarioCliente, string $emailCliente): ?array
     {
         $pdo = DAO::obtenerPdoConexionBD();
@@ -129,17 +196,17 @@ class DAO
 
     public static function guardarImg($usuarioCliente,$foto,$ruta){
         //foto: name del de la foto
-        // ruta: ruta temporal
-        // usuario: usuario de que vamos a modificar
+        //ruta: ruta temporal
+        //usuario: usuario de que vamos a modificar
 
-        $destino= "FotosDePerfil/".$foto;
+        $destino= "uploads/$foto";
         copy($ruta, $destino);
         $extension=pathinfo($foto,PATHINFO_EXTENSION);
         $nombreNuevo="$usuarioCliente"."."."$extension";
-        rename("FotosDePerfil/$foto","FotosDePerfil/"."$nombreNuevo");
+        rename("uploads/$foto","uploads/"."$nombreNuevo");
         /*------- Insertar en la BDD ---------*/
         $pdo=DAO::obtenerPdoConexionBD();
-        $sqlSentencia="UPDATE cliente SET fotoDePerfilCliente=? WHERE idCliente=?";
+        $sqlSentencia="UPDATE cliente SET fotoDePerfilCliente=? WHERE usuarioCliente=?";
         $sqlUpdate=$pdo->prepare($sqlSentencia);
         $sqlUpdate->execute([$nombreNuevo,$usuarioCliente]);
     }
@@ -157,7 +224,7 @@ class DAO
         $verificarIdCliente=DAO::obtenerCliente($usuarioCliente,$emailCliente);
 
         if(!empty($verificarIdCliente)){
-            $_SESSION["txt"]="¡ERROR! El usuario introducido ya existe.";
+            $_SESSION["txt"]="¡ERROR! El usuario o el email introducidos ya existen.";
             redireccionar("UsuarioNuevoFormulario.php");
         }else{
             $sqlSentencia="INSERT INTO cliente (usuarioCliente,emailCliente,contrasennaCliente,
@@ -165,7 +232,7 @@ class DAO
             $sqlInsert= $pdo->prepare($sqlSentencia);
             $sqlInsert->execute([$usuarioCliente,$emailCliente,password_hash($usuarioCliente,PASSWORD_BCRYPT)
                 ,$codigoCookie,$foto,$nombreCliente,$apellidosCliente]);
-           DAO::guardarImg($usuarioCliente,$foto,$ruta);
+            DAO::guardarImg($usuarioCliente,$foto,$ruta);
             if($sqlInsert->rowCount()==1){
                 $_SESSION["txt"]="¡La cuenta se ha creado correctamente! Ya pudes iniciar session.";
                 redireccionar("UsuarioNuevoFormulario.php");
