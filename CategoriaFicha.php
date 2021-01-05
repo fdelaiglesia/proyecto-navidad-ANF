@@ -7,7 +7,7 @@ $idCategoria = (int)$_REQUEST["id"];
 	$nuevaEntrada = ($idCategoria == -1);
 
 	if ($nuevaEntrada) { 
-		$nombreCategoria = "<introduzca una categoria >";
+		$nombreCategoria = "<introduzca una categoria>";
 	} else { 
 		$categoria = DAO::categoriaObtenerPorId($idCategoria);
 		$nombreCategoria = $categoria->getNombreCategoria();

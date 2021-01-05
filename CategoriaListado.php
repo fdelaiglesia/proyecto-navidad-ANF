@@ -37,6 +37,6 @@ $categorias = DAO::categoriaObtenerTodos();
 <br>
 <br>
 
-<a href='ComicListado.php'>Volver al listado de Categorias.</a>
+<a href='ComicListado.php'>Volver al listado de Comics.</a>
 </body>
 </html>

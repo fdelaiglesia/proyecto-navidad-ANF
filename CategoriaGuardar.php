@@ -2,7 +2,7 @@
 require_once "_com/DAO.php";
 
 
-$idCategoria = (int)$_REQUEST["id"];
+$idCategoria= (int)$_REQUEST["id"];
 $nombreCategoria= (string)$_REQUEST["nombre"];
 
 
@@ -40,7 +40,7 @@ if ($correcto|| $datosNoModificados) { ?>
         <h1>Guardado completado</h1>
         <p>Se han guardado correctamente los datos de <?= $nombreCategoria ?>.</p>
 
-        <?php if ($datosNoModificados == 0) { ?>
+        <?php if ($datosNoModificados) { ?>
             <p>En realidad, no había modificado nada, pero no está de más que se haya asegurado pulsando el botón de guardar :)</p>
         <?php } ?>
     <?php }
