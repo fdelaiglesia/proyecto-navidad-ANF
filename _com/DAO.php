@@ -249,17 +249,15 @@ class DAO
             }
         }
     } //FIN FUNCION DE CREAR NUEVO USUARIO
+    
     /*---------- Funciones para Categoría ----------*/
 
-    public static function categoriaEliminarPorId(int $id): bool
+    public static function eliminarCategoriaPorId(int $id): bool
     {
+        
         $sql = "DELETE FROM categoria WHERE idCategoria=?";
-        $return = DAO::ejecutarConsultaObtener($sql, [$id]);
-        if ($return) {
-            return true;
-        } else {
-            return false;
-        }
+
+        return self::ejecutarConsultaActualizar($sql, [$id]);
     }
 
     public static function categoriaCrear($nombreCategoria): bool
@@ -272,8 +270,9 @@ class DAO
     public static function categoriaModificar($nombreCategoria, $idCategoria): bool
     {
         $sql = "UPDATE categoria SET nombreCategoria=? WHERE idCategoria=?";
-        $parametros = [$nombreCategoria, $idCategoria];
-        return $datosNoModificados = DAO::ejecutarConsultaActualizar($sql, $parametros);
+        $parametros = [$idCategoria,$nombreCategoria];
+        $datos = DAO::ejecutarConsultaActualizar($sql, $parametros);
+        return $datos;
     }
     private static function categoriaCrearDesdeRs(array $fila): Categoria
     {

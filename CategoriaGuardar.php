@@ -8,8 +8,8 @@ $nombreCategoria= (string)$_REQUEST["nombre"];
 
 
 $nuevaEntrada = ($idCategoria == -1);
-$correcto = "";
-$datosNoModificados = "";
+$correcto = false;
+$datosNoModificados = false;
 if ($nuevaEntrada) {
     $correcto = DAO::categoriaCrear($nombreCategoria);
 } else {

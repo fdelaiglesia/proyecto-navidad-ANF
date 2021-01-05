@@ -2,8 +2,8 @@
 require_once "_com/DAO.php";
 
 
-$id = (int)$_REQUEST["id"];
-$eliminar = DAO::categoriaEliminarPorId($id);
+$idCategoria = (int)$_REQUEST["id"];
+$eliminar = DAO::eliminarCategoriaPorId($id);
 
 
 ?>
