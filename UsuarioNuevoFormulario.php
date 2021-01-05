@@ -28,7 +28,7 @@ session_start();
         <input type="submit" name="Crear" value="Crear Cuenta">
     </form>
 </div>
-
+<a href="SessionInicioFormulario.php">Ya tengo cuenta...</a>
 </body>
 
 </html>

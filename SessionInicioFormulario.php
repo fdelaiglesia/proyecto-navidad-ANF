@@ -43,7 +43,7 @@ if(isset($_SESSION["txto"])){
         <input type="submit" name="Iniciar Session" value="Iniciar Session">
     </form>
 </div>
-
+<a href="SessionInicioFormulario.php">Registrarse</a>
 </body>
 
 </html>

@@ -42,6 +42,9 @@ $comics = DAO::comicObtenerTodos();
             </td>
             <td>
             <a href='ComicEliminar.php?idComic=<?=$comic->getId()?>'> (X)</a>
+            </td>   
+            <td>
+            <a href='CarritoAnadir.php?idComic=<?=$comic->getId()?>&idCliente=<?=$_SESSION["idCliente"]?>'> Añadir al carrito</a>
             </td>    
         </tr>
 

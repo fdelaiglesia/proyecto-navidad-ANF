@@ -24,6 +24,7 @@ require_once "_com/DAO.php";
         $apellidosCliente=(string)$resultados[0]["apellidosCliente"];
         /*--- funcion abajo tmbn redericiona ---*/
         DAO::marcarSesionComoIniciada($resultados);
+        redireccionar("ComicListado.php");
     }else{
         $_SESSION["txto"]="El usuario o la contraseña no son correctos";
         //redireccionar("SessionInicioFormulario.php");
