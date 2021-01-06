@@ -1,7 +1,11 @@
 <?php
+ini_set('display_errors', "1");
+ini_set('display_startup_errors', "1");
+error_reporting(E_ALL);
 require_once "_com/DAO.php";
 
 $comics = DAO::comicObtenerTodos();
+//$resultados=DAO::obtenerClienteConUsuario($_SESSION["usuarioCliente"]);
 
 ?>
 <!DOCTYPE html>
@@ -14,6 +18,7 @@ $comics = DAO::comicObtenerTodos();
 </head>
 
 <body>
+
 <h1>Listado de Comics</h1>
 
 <table border='1'>
@@ -54,6 +59,8 @@ $comics = DAO::comicObtenerTodos();
 <a href="ComicFicha.php?idComic=-1" >Añadir comic</a>
 <br>
 <a href='CategoriaListado.php'>Volver al listado de Categorias.</a>
+<a href='SesionCerrar.php'>Cerrar Session</a>
+
 
 </body>
 </html>

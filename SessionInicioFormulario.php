@@ -2,13 +2,16 @@
 require_once "_com/DAO.php";
 /*Si no hay session iniciada redirigimos a la pagina de CONTENIDO PRIADO 1*/
 
-/*if(iniciarSessionConCookie()){
-        $identificador=$_COOKIE["identificador"];
+if(DAO::iniciarSessionConCookie()){
+        $usuarioCliente=$_COOKIE["usuarioCliente"];
         $codigoCookie=$_COOKIE["clave"];
-        $arrayUsuario=obtenerUsuario($identificador);
-        generarCookieRecordar($arrayUsuario); // Generar otro codigo cookie nuevo
-        marcarSesionComoIniciada($arrayUsuario); // Canjear la session
-}*/
+        $arrayUsuario=DAO::obtenerClienteConUsuario($usuarioCliente);
+        //generarCookieRecordar($arrayUsuario); // Generar otro codigo cookie nuevo
+        DAO::marcarSesionComoIniciada($arrayUsuario); // Canjear la session
+}elseif (DAO::haySesionIniciada()){
+    //redireccionar();
+}else{
+}
 
 ?>
 
@@ -43,7 +46,7 @@ if(isset($_SESSION["txto"])){
         <input type="submit" name="Iniciar Session" value="Iniciar Session">
     </form>
 </div>
-<a href="SessionInicioFormulario.php">Registrarse</a>
+<a href="UsuarioNuevoFormulario.php">Registrarse</a>
 </body>
 
 </html>

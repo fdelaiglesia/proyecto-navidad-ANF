@@ -49,10 +49,37 @@ class DAO
             return false;
         }
     }
+    public static function iniciarSessionConCookie(): bool
+    {
+        if(isset($_COOKIE["usuarioCliente"]) && isset($_COOKIE["clave"])){
+            $usuarioCliente=$_COOKIE["usuarioCliente"];
+            $codigoCookie=$_COOKIE["clave"];
+            $arrayUsuario=DAO::obtenerClienteConUsuario($usuarioCliente);//Obtener usuario con el identificador de la cookie
+            // Si hay un usuario con el identificador de la cookie
+            // Y ademas coincide el codigoCookie de la BDD y el codigoCookie de la cookie
+            if( $arrayUsuario && $arrayUsuario[0]["codigoCookieCliente"]==$codigoCookie ){
+                DAO::generarCookieRecordar($arrayUsuario);// Generamos otro codigo y renovamos la cookie
+                return true;
+            }else{
+                DAO::borrarCookieRecordar($arrayUsuario);// Borranos la cookie
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    public static function haySesionIniciada(): bool{
+        if(isset($_SESSION["usuarioCliente"])){
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
     public static function borrarCookieRecordar(array $arrayUsuario)
     {
         // Eliminar el código cookie de nuestra BD.
-        $idCliente = $arrayUsuario[0]["idCliente"];
+        $idCliente = $arrayUsuario["idCliente"];
         DAO::anotarCookieEnBDD("NULL", $idCliente);
         // Pedir borrar cookie (setcookie con tiempo time() - negativo...)
         setcookie("identificador", "", time() - 86400);
@@ -73,7 +100,6 @@ class DAO
         $idCliente = $arrayUsuario[0]["idCliente"];
         // actualizar el codigoCookie en la BDD
         DAO::anotarCookieEnBDD($codigoCookie, $idCliente);
-        // TODO Para una seguridad óptima convendría anotar en la BD la fecha de caducidad de la cookie y no aceptar ninguna cookie pasada dicha fecha.
         // anotar la cookie en el navegador
         $usuarioCliente = $arrayUsuario[0]["usuarioCliente"];
         $valorCookie = $codigoCookie;
@@ -86,7 +112,7 @@ class DAO
         $_SESSION["usuarioCliente"] = $arrayUsuario[0]["usuarioCliente"];
         $_SESSION["nombreCliente"] = $arrayUsuario[0]["nombreCliente"];
         $_SESSION["apellidosCliente"] = $arrayUsuario[0]["apellidosCliente"];
-        //redireccionar("");
+
     }
 
     public static function ejecutarConsultaObtener(string $sql, array $parametros): ?array
@@ -181,7 +207,7 @@ class DAO
     public static function obtenerClienteConUsuario(string $usuarioCliente): ?array
     {
         $pdo = DAO::obtenerPdoConexionBD();
-        $sql = "SELECT * FROM cliente WHERE usuarioCliente='$usuarioCliente'";
+        $sql = "SELECT * FROM cliente WHERE usuarioCliente = '$usuarioCliente'";
         $select = $pdo->prepare($sql);
         $select->execute([]);
         $resultados = $select->fetchAll();
@@ -206,14 +232,16 @@ class DAO
         $destino = "uploads/$foto";
         move_uploaded_file($ruta, $destino);
         $extension = pathinfo($foto, PATHINFO_EXTENSION);
-        $nombreNuevo = "$usuarioCliente" . "." . "$extension";
-        rename("uploads/$foto", "uploads/" . "$nombreNuevo");
-        
-        /*------- Insertar en la BDD ---------*/
-        $pdo = DAO::obtenerPdoConexionBD();
-        $sqlSentencia = "UPDATE cliente SET fotoDePerfilCliente=? WHERE usuarioCliente=?";
-        $sqlUpdate = $pdo->prepare($sqlSentencia);
-        $sqlUpdate->execute([$nombreNuevo, $usuarioCliente]);
+        if($foto!="NULL"){
+            $nombreNuevo = "$usuarioCliente" . "." . "$extension";
+            rename("uploads/$foto", "uploads/" . "$nombreNuevo");
+            /*------- Insertar en la BDD ---------*/
+            $pdo = DAO::obtenerPdoConexionBD();
+            $sqlSentencia = "UPDATE cliente SET fotoDePerfilCliente=? WHERE usuarioCliente=?";
+            $sqlUpdate = $pdo->prepare($sqlSentencia);
+            $sqlUpdate->execute([$nombreNuevo, $usuarioCliente]);
+        }
+
     }
     public static function crearUsuario(array $informacionUsuario)
     {
@@ -225,7 +253,11 @@ class DAO
         $usuarioCliente = (string)$informacionUsuario["usuarioCliente"];
         $emailCliente = (string)$informacionUsuario["emailCliente"];
         $contrasennaCliente = (string)$informacionUsuario["contrasennaCliente"];
-        $foto = $informacionUsuario["foto"];
+        if($informacionUsuario["foto"]){
+            $foto = $informacionUsuario["foto"];
+        }else{
+            $foto = "NULL";
+        }
         $ruta = $informacionUsuario["ruta"];
         $verificarIdCliente = DAO::obtenerCliente($usuarioCliente, $emailCliente);
 

@@ -14,7 +14,13 @@ require_once "_com/DAO.php";
 
     /*---- Si se ha marcado "Recuerdame" generamos cookie----*/
     if(isset($_POST["recordar"])){
+       // DAO::marcarSesionComoIniciada($resultados);
+        $_SESSION["idCliente"] =  "$resultados[0]['idCliente']";
+        $_SESSION["usuarioCliente"] =  "$resultados[0]['usuarioCliente']";
+        $_SESSION["nombreCliente"] =  "$resultados[0]['nombreCliente']";
+        $_SESSION["apellidosCliente"] =  "$resultados[0]['apellidosCliente']";
         DAO::generarCookieRecordar($resultados);
+        redireccionar("ComicListado.php");
     }
     /* SI hay un solo resultado---> Inicio session correcto */
     if(count($resultados)==1 && password_verify($contrasennaCliente,$resultados[0]["contrasennaCliente"])){
@@ -23,11 +29,15 @@ require_once "_com/DAO.php";
         $nombreCliente=(string)$resultados[0]["nombreCliente"];
         $apellidosCliente=(string)$resultados[0]["apellidosCliente"];
         /*--- funcion abajo tmbn redericiona ---*/
-        DAO::marcarSesionComoIniciada($resultados);
+        $_SESSION["idCliente"] =  "$resultados[0]['idCliente']";
+        $_SESSION["usuarioCliente"] =  "$resultados[0]['usuarioCliente']";
+        $_SESSION["nombreCliente"] =  "$resultados[0]['nombreCliente']";
+        $_SESSION["apellidosCliente"] =  "$resultados[0]['apellidosCliente']";
+        //DAO::marcarSesionComoIniciada($resultados);
         redireccionar("ComicListado.php");
     }else{
         $_SESSION["txto"]="El usuario o la contraseña no son correctos";
-        //redireccionar("SessionInicioFormulario.php");
+        redireccionar("SessionInicioFormulario.php");
     }
 
 

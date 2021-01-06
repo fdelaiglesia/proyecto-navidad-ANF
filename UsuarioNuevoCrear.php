@@ -15,7 +15,12 @@ if(isset($_POST["Crear"])){
         $contrasennaCliente=(string)$_POST["contrasennaCliente"];
         $nombreCliente=(string)$_POST["nombreCliente"];
         $apellidosCliente=(string)$_POST["apellidosCliente"];
-        $foto= $_FILES["fotoDePerfilCliente"]["name"];
+        if(isset($_FILES["fotoDePerfilCliente"])){
+            $foto= $_FILES["fotoDePerfilCliente"]["name"];
+        }else{
+            $foto= "NULL";
+        }
+       // $foto= $_FILES["fotoDePerfilCliente"]["name"];
         $ruta= $_FILES["fotoDePerfilCliente"]["tmp_name"];
 
         /* CARGAR EL ARRAY CON DATOS*/
@@ -35,6 +40,4 @@ if(isset($_POST["Crear"])){
     }
 }
 
-
-// TODO ¿Excepciones?
 
