@@ -131,15 +131,24 @@ class Comic extends Dato
 class Carrito extends Dato
 {
     use Identificable;
-    private string $idCliente;
+    private int $idPedido;
+    private int $idCliente;
+    private int $unidades;
 
-    public function __construct(Cliente $cliente)
+    public function __construct(int $idPedido, int $idComic, int $unidades)
     {
-
+        $this->setIdPedido($idPedido);
+        $this->setIdComic($idComic);
+        $this->setUnidades($unidades);
     }
 
-    public function getIdCliente(): string{return $this->idCliente;}
-    public function setIdCliente(Cliente $cliente): void {$this->idCliente = $cliente->getId();}
+    public function getIdComic(): string{return $this->idComic;}
+    public function getIdPedido(): string{return $this->idPedido;}
+    public function getUnidades(): string{return $this->unidades;}
+    public function setIdComic(int $idComic): void {$this->idComic = $idComic;}
+    public function setIdPedido(int $idPedido): void {$this->idPedido = $idPedido;}
+    public function setUnidades(int $unidades): void {$this->unidades= $unidades;}
+    
 }
 
 /*----------------- Clase Pedido -------------------*/
@@ -147,18 +156,23 @@ class Pedido extends Carrito{
     private string $direccionEnvio;
     private string $fechaConfirmacion;
 
-    public function __construct(Cliente $cliente, string $direccionEnvio, string $fechaConfirmacion)
+    public function __construct(int $idPedido,int $idCliente, string $direccionEnvio, string $fechaConfirmacion)
     {
-        parent::__construct($cliente);
+        $this->setIdPedidoP($idPedido);
+        $this->setIdClienteP($idCliente);
         $this->setDireccionEnvio($direccionEnvio);
         $this->setDireccionEnvio($fechaConfirmacion);
     }
 
     /*------------------ Funciones GET de todas la propiedades de Pedido -----------------*/
+    public function getIdPedido(): string{return $this->idPedido;}
+    public function getIdCliente(): string{return $this->idCliente;}
     public function getDireccionEnvio(): string{return $this->direccionEnvio;}
     public function getFechaConfirmacion(): string{return $this->fechaConfirmacion;}
 
     /*------------------ Funciones SET de todas la propiedades de Cliente -----------------*/
+    public function setIdPedidoP(string $idPedido): void{$this->idpedido = $idPedido;}
+    public function setIdClienteP(string $idCliente): void{$this->getIdCliente = $idCliente;}
     public function setDireccionEnvio(string $direccionEnvio): void{$this->direccionEnvio = $direccionEnvio;}
     public function setFechaConfirmacion(string $fechaConfirmacion): void{$this->fechaConfirmacion = $fechaConfirmacion;}
 }

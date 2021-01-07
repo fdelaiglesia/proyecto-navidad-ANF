@@ -19,7 +19,7 @@ class DAO
             PDO::ATTR_EMULATE_PREPARES => false, // Modo emulación desactivado para prepared statements "reales"
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Que los errores salgan como excepciones.
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, // El modo de fetch que queremos por defecto.
-          
+
         ];
 
         try {
@@ -51,28 +51,29 @@ class DAO
     }
     public static function iniciarSessionConCookie(): bool
     {
-        if(isset($_COOKIE["usuarioCliente"]) && isset($_COOKIE["clave"])){
-            $usuarioCliente=$_COOKIE["usuarioCliente"];
-            $codigoCookie=$_COOKIE["clave"];
-            $arrayUsuario=DAO::obtenerClienteConUsuario($usuarioCliente);//Obtener usuario con el identificador de la cookie
+        if (isset($_COOKIE["usuarioCliente"]) && isset($_COOKIE["clave"])) {
+            $usuarioCliente = $_COOKIE["usuarioCliente"];
+            $codigoCookie = $_COOKIE["clave"];
+            $arrayUsuario = DAO::obtenerClienteConUsuario($usuarioCliente); //Obtener usuario con el identificador de la cookie
             // Si hay un usuario con el identificador de la cookie
             // Y ademas coincide el codigoCookie de la BDD y el codigoCookie de la cookie
-            if( $arrayUsuario && $arrayUsuario[0]["codigoCookieCliente"]==$codigoCookie ){
-                DAO::generarCookieRecordar($arrayUsuario);// Generamos otro codigo y renovamos la cookie
+            if ($arrayUsuario && $arrayUsuario[0]["codigoCookieCliente"] == $codigoCookie) {
+                DAO::generarCookieRecordar($arrayUsuario); // Generamos otro codigo y renovamos la cookie
                 return true;
-            }else{
-                DAO::borrarCookieRecordar($arrayUsuario);// Borranos la cookie
+            } else {
+                DAO::borrarCookieRecordar($arrayUsuario); // Borranos la cookie
                 return false;
             }
-        }else{
+        } else {
             return false;
         }
     }
 
-    public static function haySesionIniciada(): bool{
-        if(isset($_SESSION["usuarioCliente"])){
+    public static function haySesionIniciada(): bool
+    {
+        if (isset($_SESSION["usuarioCliente"])) {
             return TRUE;
-        }else{
+        } else {
             return FALSE;
         }
     }
@@ -88,7 +89,7 @@ class DAO
     public static function cerrarSesion()
     {
         //$usuarioCliente=$_SESSION["usuarioCliente"];
-        $resultados=DAO::obtenerClienteConUsuario($_SESSION["usuarioCliente"]);
+        $resultados = DAO::obtenerClienteConUsuario($_SESSION["usuarioCliente"]);
         DAO::borrarCookieRecordar($resultados);
         session_unset();
         session_destroy();
@@ -113,7 +114,6 @@ class DAO
         $_SESSION["usuarioCliente"] = $arrayUsuario[0]["usuarioCliente"];
         $_SESSION["nombreCliente"] = $arrayUsuario[0]["nombreCliente"];
         $_SESSION["apellidosCliente"] = $arrayUsuario[0]["apellidosCliente"];
-
     }
 
     public static function ejecutarConsultaObtener(string $sql, array $parametros): ?array
@@ -233,7 +233,7 @@ class DAO
         $destino = "uploads/$foto";
         move_uploaded_file($ruta, $destino);
         $extension = pathinfo($foto, PATHINFO_EXTENSION);
-        if($foto!="NULL"){
+        if ($foto != "NULL") {
             $nombreNuevo = "$usuarioCliente" . "." . "$extension";
             rename("uploads/$foto", "uploads/" . "$nombreNuevo");
             /*------- Insertar en la BDD ---------*/
@@ -242,7 +242,6 @@ class DAO
             $sqlUpdate = $pdo->prepare($sqlSentencia);
             $sqlUpdate->execute([$nombreNuevo, $usuarioCliente]);
         }
-
     }
     public static function crearUsuario(array $informacionUsuario)
     {
@@ -254,9 +253,9 @@ class DAO
         $usuarioCliente = (string)$informacionUsuario["usuarioCliente"];
         $emailCliente = (string)$informacionUsuario["emailCliente"];
         $contrasennaCliente = (string)$informacionUsuario["contrasennaCliente"];
-        if($informacionUsuario["foto"]){
+        if ($informacionUsuario["foto"]) {
             $foto = $informacionUsuario["foto"];
-        }else{
+        } else {
             $foto = "NULL";
         }
         $ruta = $informacionUsuario["ruta"];
@@ -282,12 +281,12 @@ class DAO
             }
         }
     } //FIN FUNCION DE CREAR NUEVO USUARIO
-    
+
     /*---------- Funciones para Categoría ----------*/
 
     public static function eliminarCategoriaPorId(int $id): bool
     {
-        
+
         $sql = "DELETE FROM categoria WHERE idCategoria=?";
 
         return self::ejecutarConsultaActualizar($sql, [$id]);
@@ -303,7 +302,7 @@ class DAO
     public static function categoriaModificar($nombreCategoria, $idCategoria): bool
     {
         $sql = "UPDATE categoria SET nombreCategoria=? WHERE idCategoria=?";
-        $parametros = [$idCategoria,$nombreCategoria];
+        $parametros = [$idCategoria, $nombreCategoria];
         $datos = DAO::ejecutarConsultaActualizar($sql, $parametros);
         return $datos;
     }
@@ -366,12 +365,11 @@ class DAO
     }
     public static function pedidoObetenerPorId($idCliente): ?array
     {
-        
+
         $sql = "SELECT * FROM pedido WHERE idCliente = ? AND fechaConfrmacionPedido IS NULL";
         $parametros = [$idCliente];
-        $resultado = self::ejecutarConsultaObtener($sql,$parametros);
+        $resultado = self::ejecutarConsultaObtener($sql, $parametros);
         return $resultado;
-        
     }
     public static function carritoAnadirComic($idComic, $idCliente)
     {
@@ -380,8 +378,60 @@ class DAO
         $idPedido = $rs[0]['idPedido'];
         $cantidad = 1;
         $sql = "INSERT INTO comic_pedido (idPedido,idComic,unidades) VALUES (?,?,?)";
-        $parametros = [$idPedido,$idComic,$cantidad];
+        $parametros = [$idPedido, $idComic, $cantidad];
         $sentenciaFinal = $pdo->prepare($sql, $parametros);
         return $sentenciaFinal->execute($parametros);
+    }
+    public static function carritoObtenerIdCliente($idCliente): array
+    {
+
+        $datos = [];
+        $rs = self::ejecutarConsultaObtener(
+            "SELECT * FROM comic_pedido c,pedido p WHERE idCliente = ? AND c.idPedido = p.idPedido",
+            [$idCliente]
+        );
+
+        foreach ($rs as $fila) {
+            $producto = self::carritoCrearDesdeRs($fila);
+            array_push($datos, $producto);
+        }
+
+        return $datos;
+    }
+    public static function carritoCrearDesdeRs(array $fila): Carrito
+    {
+        return new Carrito($fila["idPedido"], $fila["idComic"], $fila["unidades"]);
+    }
+    public static function carritoObtenerComic(int $idComic): string
+    {
+        $rs = self::ejecutarConsultaObtener(
+            "SELECT tituloComic FROM comic WHERE idComic=?",
+            [$idComic]
+        );
+        return $rs[0]["tituloComic"];
+    }
+    public static function carritoObtenerPrecio(int $idComic): string
+    {
+        $rs = self::ejecutarConsultaObtener(
+            "SELECT precioComic FROM comic WHERE idComic=?",
+            [$idComic]
+        );
+        return $rs[0]["precioComic"];
+    }
+    public static function carritoObtenerStock(int $idComic): string
+    {
+        $rs = self::ejecutarConsultaObtener(
+            "SELECT cantidadComic FROM comic WHERE idComic=?",
+            [$idComic]
+        );
+        return $rs[0]["cantidadComic"];
+    }
+    public static function carritoModificarUnidades(int $unidades, int $idComic): string
+    {
+        return $rs = self::ejecutarConsultaActualizar(
+            "UPDATE comic_pedido SET unidades = ? WHERE idComic=?",
+            [$unidades,$idComic]
+         );
+       
     }
 }// FIN DE LA CLASSE DAO

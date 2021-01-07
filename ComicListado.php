@@ -18,7 +18,7 @@ $comics = DAO::comicObtenerTodos();
 </head>
 
 <body>
-
+<a href='CarritoMostrar.php?idCliente=<?=$_SESSION['idCliente']?>' style="float: right;">Ver Carrito</a>
 <h1>Listado de Comics</h1>
 
 <table border='1'>
@@ -60,7 +60,6 @@ $comics = DAO::comicObtenerTodos();
 <br>
 <a href='CategoriaListado.php'>Volver al listado de Categorias.</a>
 <a href='SesionCerrar.php'>Cerrar Session</a>
-
 
 </body>
 </html>
