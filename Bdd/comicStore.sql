@@ -55,7 +55,7 @@ CREATE TABLE `cliente` (
   `usuarioCliente` varchar(25) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `emailCliente` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `contrasennaCliente` varchar(80) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `codigoCookieCliente` varchar(80) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `codigoCookieCliente` varchar(80) COLLATE utf8mb4_spanish2_ci,
   `fotoDePerfilCliente` varchar(40) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `nombreCliente` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `apellidosCliente` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL

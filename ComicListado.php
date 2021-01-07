@@ -5,8 +5,8 @@ error_reporting(E_ALL);
 require_once "_com/DAO.php";
 
 $comics = DAO::comicObtenerTodos();
-//$resultados=DAO::obtenerClienteConUsuario($_SESSION["usuarioCliente"]);
-
+$resultados=DAO::obtenerClienteConUsuario($_SESSION['usuarioCliente']);
+//print_r($_SESSION['usuarioCliente']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -56,6 +56,8 @@ $comics = DAO::comicObtenerTodos();
     <?php } ?>
 
 </table>
+<a href="UsuarioPerfilVer.php?usuarioCliente=<?=$_SESSION["usuarioCliente"]?>" >Ver Perfil</a>
+
 <a href="ComicFicha.php?idComic=-1" >Añadir comic</a>
 <br>
 <a href='CategoriaListado.php'>Volver al listado de Categorias.</a>

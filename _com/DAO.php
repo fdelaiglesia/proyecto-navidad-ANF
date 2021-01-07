@@ -80,7 +80,7 @@ class DAO
     public static function borrarCookieRecordar(array $arrayUsuario)
     {
         // Eliminar el código cookie de nuestra BD.
-        $idCliente = $arrayUsuario["idCliente"];
+        $idCliente = $arrayUsuario[0]["idCliente"];
         DAO::anotarCookieEnBDD("NULL", $idCliente);
         // Pedir borrar cookie (setcookie con tiempo time() - negativo...)
         setcookie("identificador", "", time() - 86400);

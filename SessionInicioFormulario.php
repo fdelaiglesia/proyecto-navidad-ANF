@@ -38,6 +38,9 @@ if(isset($_SESSION["txto"])){
     unset($_SESSION["txto"]);
 }
 ?>
+<?php if(isset($_SESSION["cambiarContraseña"])){?>
+    <p><?=$_SESSION["cambiarContraseña"]?></p>
+    <?php session_unset();}?>
 <div class="formulario">
     <form method="post" action="SesionInicioComprobar.php">
         <input type="text" name="usuarioCliente" placeholder="Introduce tu usuario" required><br><br>
