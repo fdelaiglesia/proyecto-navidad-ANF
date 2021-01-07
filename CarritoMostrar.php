@@ -49,6 +49,7 @@ $precioTotal = 0;
 <p>Total de productos = <?=$totalProductos?></p>
 <br>
 <p>Precio del pedido = <?=$precioTotal?> €</p>
+<a href='ComicListado.php'>Ver más comics</a>
 <a href='SesionCerrar.php'>Cerrar Session</a>
 
 </body>
