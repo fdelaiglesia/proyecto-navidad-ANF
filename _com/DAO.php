@@ -87,8 +87,9 @@ class DAO
     }
     public static function cerrarSesion()
     {
-        $arrayUsuario = DAO::obtenerClienteConUsuario((string)$_SESSION["usuarioCliente"]);
-        DAO::borrarCookieRecordar($arrayUsuario);
+        //$usuarioCliente=$_SESSION["usuarioCliente"];
+        $resultados=DAO::obtenerClienteConUsuario($_SESSION["usuarioCliente"]);
+        DAO::borrarCookieRecordar($resultados);
         session_unset();
         session_destroy();
         redireccionar("SessionInicioFormulario.php");
@@ -207,7 +208,7 @@ class DAO
     public static function obtenerClienteConUsuario(string $usuarioCliente): ?array
     {
         $pdo = DAO::obtenerPdoConexionBD();
-        $sql = "SELECT * FROM cliente WHERE usuarioCliente = '$usuarioCliente'";
+        $sql = "SELECT * FROM cliente WHERE usuarioCliente='$usuarioCliente' ";
         $select = $pdo->prepare($sql);
         $select->execute([]);
         $resultados = $select->fetchAll();
