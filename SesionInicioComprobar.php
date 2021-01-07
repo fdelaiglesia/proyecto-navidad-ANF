@@ -12,11 +12,11 @@ require_once "_com/DAO.php";
     /* Consultar que el usuario y contrasenna estan en la BDD */
     $resultados= DAO::obtenerClienteConUsuario($usuarioCliente);
 
-    /*---- Si se ha marcado "Recuerdame" generamos cookie----*/
+    /*---- Si se ha marcado "Recuerdame" generamos cookie ----*/
     if(isset($_POST["recordar"])){
-       DAO::marcarSesionComoIniciada($resultados);
-        DAO::generarCookieRecordar($resultados);
-        redireccionar("ComicListado.php");
+      // DAO::marcarSesionComoIniciada($resultados);
+       DAO::generarCookieRecordar($resultados);
+        //redireccionar("ComicListado.php");
     }
     /* SI hay un solo resultado---> Inicio session correcto */
     if(count($resultados)==1 && password_verify($contrasennaCliente,$resultados[0]["contrasennaCliente"])){
