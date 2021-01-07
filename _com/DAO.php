@@ -372,15 +372,21 @@ class DAO
         return $resultado;
     }
     public static function carritoAnadirComic($idComic, $idCliente)
-    {
-        $pdo = DAO::obtenerPdoConexionBd();
-        $rs =  self::pedidoObetenerPorId($idCliente);
+    {   $rs =  self::pedidoObetenerPorId($idCliente);
         $idPedido = $rs[0]['idPedido'];
+        $pdo = DAO::obtenerPdoConexionBd();
+        $comprobar = "SELECT * FROM comic_pedido WHERE idComic= ? AND idPedido = ?";
+        $parametrosComprobar = [$idComic,$idPedido];
+        $sentencia = $pdo->prepare($comprobar, $parametrosComprobar);
+        $sentencia->execute($parametrosComprobar);
+        if($sentencia->rowCount() == 0){
+        
         $cantidad = 1;
         $sql = "INSERT INTO comic_pedido (idPedido,idComic,unidades) VALUES (?,?,?)";
         $parametros = [$idPedido, $idComic, $cantidad];
         $sentenciaFinal = $pdo->prepare($sql, $parametros);
         return $sentenciaFinal->execute($parametros);
+        }
     }
     public static function carritoObtenerIdCliente($idCliente): array
     {
@@ -433,5 +439,15 @@ class DAO
             [$unidades,$idComic]
          );
        
+    }
+    public static function carritoEliminar($idPedido,$idComic): bool
+    {
+        $sql = "DELETE FROM comic_pedido WHERE idPedido=? AND idComic=?";
+        $return = DAO::ejecutarConsultaActualizar($sql, [$idPedido,$idComic]);
+        if ($return) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }// FIN DE LA CLASSE DAO
