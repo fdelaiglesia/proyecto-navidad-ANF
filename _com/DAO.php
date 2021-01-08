@@ -450,4 +450,16 @@ class DAO
             return false;
         }
     }
+
+    public static function pedidoConfirmar($idPedido,$direccionEnvioPedido): bool
+    {
+        $fecha = date("Y/m/d");
+        $sql = "UPDATE pedido SET direccionEnvioPedido = ?, fechaConfrmacionPedido = ?  WHERE idPedido=? ";
+        $return = DAO::ejecutarConsultaActualizar($sql, [$direccionEnvioPedido,$fecha,$idPedido]);
+        if ($return) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }// FIN DE LA CLASSE DAO
