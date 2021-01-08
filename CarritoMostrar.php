@@ -4,6 +4,7 @@ $productos = DAO::pedidoCrearParaCliente($_REQUEST['idCliente']);
 $comics = DAO::comicObtenerTodos();
 $totalProductos = 0;
 $precioTotal = 0;
+print_r($productos);
 ?>
 <!DOCTYPE html>
 <html lang="es">

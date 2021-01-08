@@ -123,7 +123,7 @@ INSERT INTO `comic_pedido` (`idPedido`, `idComic`, `unidades`) VALUES
 CREATE TABLE `pedido` (
   `idPedido` int(10) NOT NULL,
   `idCliente` int(10) NOT NULL,
-  `direccionEnvioPedido` varchar(60) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `direccionEnvioPedido` varchar(60) COLLATE utf8mb4_spanish2_ci DEFAULT NULL,
   `fechaConfrmacionPedido` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 

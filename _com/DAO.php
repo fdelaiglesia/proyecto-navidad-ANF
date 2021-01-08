@@ -393,7 +393,9 @@ class DAO
 
         $datos = [];
         $rs = self::ejecutarConsultaObtener(
-            "SELECT * FROM comic_pedido c,pedido p WHERE idCliente = ? AND c.idPedido = p.idPedido",
+            "SELECT * FROM comic_pedido c,pedido p WHERE idCliente = ? 
+                                        AND c.idPedido = p.idPedido
+                                        AND p.fechaConfrmacionPedido IS NULL",
             [$idCliente]
         );
 
