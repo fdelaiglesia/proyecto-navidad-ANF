@@ -1,6 +1,6 @@
 <?php
 require_once "_com/DAO.php";
-$productos = DAO::carritoObtenerIdCliente($_REQUEST['idCliente']);
+$productos = DAO::pedidoCrearParaCliente($_REQUEST['idCliente']);
 $comics = DAO::comicObtenerTodos();
 $totalProductos = 0;
 $precioTotal = 0;

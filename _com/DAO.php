@@ -345,7 +345,7 @@ class DAO
     }
 
     /*---------- Funciones para Pedido----------*/
-    public static function pedidoCrearParaCliente($idCliente): bool
+    public static function pedidoCrearParaCliente($idCliente)
     {
         $pdo = DAO::obtenerPdoConexionBd();
         $comprobar = "SELECT * FROM pedido WHERE idCliente = ? AND fechaConfrmacionPedido IS NULL";
@@ -360,7 +360,7 @@ class DAO
             $sentenciaFinal = $pdo->prepare($sql, $parametros);
             return $sentenciaFinal->execute($parametros);
         } else {
-            return false;
+            return self::carritoObtenerIdCliente($idCliente);
         }
     }
     public static function pedidoObetenerPorId($idCliente): ?array
