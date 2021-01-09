@@ -19,6 +19,7 @@ $resultados=DAO::obtenerClienteConUsuario($_SESSION['usuarioCliente']);
 
 <body>
 <a href='CarritoMostrar.php?idCliente=<?=$_SESSION['idCliente']?>' style="float: right;">Ver Carrito</a>
+<a href='PedidoMostrar.php?idCliente=<?=$_SESSION['idCliente']?>' style="float: right;">Ver Pedidos</a>
 <h1>Listado de Comics</h1>
 
 <table border='1'>

@@ -4,14 +4,13 @@ $productos = DAO::pedidoCrearParaCliente($_REQUEST['idCliente']);
 $comics = DAO::comicObtenerTodos();
 $totalProductos = 0;
 $precioTotal = 0;
-print_r($productos);
 ?>
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
   <meta charset="utf-8">
-  <title>Listado Comic</title>
+  <title>Carrito</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="estilo.css">
 </head>
@@ -39,7 +38,7 @@ print_r($productos);
         </td>
         <td>
           <form action="CarritoModificarUnidades.php?idComic=<?= $producto->getIdComic()?>" method="post">
-            <input type="number" name="unidades" value="<?= $producto->getUnidades() ?>" max="<?php
+            <input type="number" name="unidades" value="<?= $producto->getUnidades() ?>" min="0" max="<?php
                echo DAO::carritoObtenerStock($producto->getIdComic()); ?>">
             <input type="submit" value="Modificar">
           </form>

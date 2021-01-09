@@ -464,4 +464,41 @@ class DAO
             return false;
         }
     }
+    public static function pedidoCrearDesdeRs(array $fila): Carrito
+    {
+        return new Pedido($fila["idPedido"], $fila["idCliente"], $fila["direccionEnvioPedido"], $fila["fechaConfrmacionPedido"]);
+    }
+
+    public static function pedidoObtetenerTodos($idCliente){
+        $datos = [];
+        $rs = self::ejecutarConsultaObtener(
+            "SELECT * FROM pedido WHERE fechaConfrmacionPedido IS NOT NULL AND idCliente = ? ",
+            [$idCliente]
+        );
+
+        foreach ($rs as $fila) {
+            $pedido = self::pedidoCrearDesdeRs($fila);
+            array_push($datos, $pedido);
+        }
+
+        return $datos;
+    }
+
+    public static function pedidoRealizadoMostrar($idPedido){
+        
+
+        $datos = [];
+        $rs = self::ejecutarConsultaObtener(
+            "SELECT * FROM comic_pedido c,pedido p WHERE c.idPedido = ? 
+                                        AND c.idPedido = p.idPedido",
+            [$idPedido]
+        );
+
+        foreach ($rs as $fila) {
+            $producto = self::carritoCrearDesdeRs($fila);
+            array_push($datos, $producto);
+        }
+
+        return $datos;
+    }
 }// FIN DE LA CLASSE DAO

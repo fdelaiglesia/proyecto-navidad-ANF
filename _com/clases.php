@@ -161,7 +161,7 @@ class Pedido extends Carrito{
         $this->setIdPedidoP($idPedido);
         $this->setIdClienteP($idCliente);
         $this->setDireccionEnvio($direccionEnvio);
-        $this->setDireccionEnvio($fechaConfirmacion);
+        $this->setFechaConfirmacion($fechaConfirmacion);
     }
 
     /*------------------ Funciones GET de todas la propiedades de Pedido -----------------*/
@@ -171,7 +171,7 @@ class Pedido extends Carrito{
     public function getFechaConfirmacion(): string{return $this->fechaConfirmacion;}
 
     /*------------------ Funciones SET de todas la propiedades de Cliente -----------------*/
-    public function setIdPedidoP(string $idPedido): void{$this->idpedido = $idPedido;}
+    public function setIdPedidoP(string $idPedido): void{$this->idPedido = $idPedido;}
     public function setIdClienteP(string $idCliente): void{$this->getIdCliente = $idCliente;}
     public function setDireccionEnvio(string $direccionEnvio): void{$this->direccionEnvio = $direccionEnvio;}
     public function setFechaConfirmacion(string $fechaConfirmacion): void{$this->fechaConfirmacion = $fechaConfirmacion;}
