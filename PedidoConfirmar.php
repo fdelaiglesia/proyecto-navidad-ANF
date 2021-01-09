@@ -2,6 +2,7 @@
 require_once "_com/DAO.php";
 
 $sql = DAO::pedidoConfirmar($_REQUEST['idPedido'],$_REQUEST['direccionEnvioPedido']);
+$idPedido=$_REQUEST['idPedido'];
 ?>
 <html>
 
@@ -14,7 +15,7 @@ $sql = DAO::pedidoConfirmar($_REQUEST['idPedido'],$_REQUEST['direccionEnvioPedid
 <body>
 <?php if($sql){ ?>
     <h1>Pedido finalizado</h1>
-    <p>BLABLALBALBALBLA</p>
+    <p>¿Quieres <a href="FacturaGenerarPDF.php?idPedido=<?=$idPedido?>">descargar</a> la factura?</p><br>
 <?php }else{ ?>
     <h1>Pedido no finalizado</h1>
     <p>Contacte con administrador</p>
