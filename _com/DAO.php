@@ -138,7 +138,7 @@ class DAO
     public static function comicEleminarPorId(int $id): bool
     {
         $sql = "DELETE FROM comic WHERE idComic=?";
-        $return = DAO::ejecutarConsultaObtener($sql, [$id]);
+        $return = DAO::ejecutarConsultaActualizar($sql, [$id]);
         if ($return) {
             return true;
         } else {
@@ -173,11 +173,11 @@ class DAO
     }
 
 
-    public static function comicObtenerTodos(): array
+    public static function comicObtenerTodos($clausulaWhere): array
     {
         $datos = [];
         $rs = self::ejecutarConsultaObtener(
-            "SELECT * FROM comic ORDER BY tituloComic",
+            "SELECT * FROM comic $clausulaWhere",
             []
         );
 

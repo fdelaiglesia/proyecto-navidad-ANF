@@ -3,10 +3,13 @@ ini_set('display_errors', "1");
 ini_set('display_startup_errors', "1");
 error_reporting(E_ALL);
 require_once "_com/DAO.php";
-
-$comics = DAO::comicObtenerTodos();
+$clausulaWhere = "";
+if (isset($_REQUEST["buscar"]) && !empty($_REQUEST["busqueda"])) {
+  $busqueda = $_REQUEST["busqueda"];
+  $clausulaWhere = "WHERE tituloComic LIKE '%" . $busqueda . "%'";
+}
+$comics = DAO::comicObtenerTodos($clausulaWhere);
 $resultados=DAO::obtenerClienteConUsuario($_SESSION['usuarioCliente']);
-//print_r($_SESSION['usuarioCliente']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -21,7 +24,10 @@ $resultados=DAO::obtenerClienteConUsuario($_SESSION['usuarioCliente']);
 <a href='CarritoMostrar.php?idCliente=<?=$_SESSION['idCliente']?>' style="float: right;">Ver Carrito</a>
 <a href='PedidoMostrar.php?idCliente=<?=$_SESSION['idCliente']?>' style="float: right;">Ver Pedidos</a>
 <h1>Listado de Comics</h1>
-
+<form action="ComicListado.php" method="post">
+        <input type="text" name="busqueda" placeholder="Buscar comic" class="busqueda">
+        <input type="submit" name="buscar" value="Buscar">
+    </form>
 <table border='1'>
 
     <tr>
@@ -57,12 +63,19 @@ $resultados=DAO::obtenerClienteConUsuario($_SESSION['usuarioCliente']);
     <?php } ?>
 
 </table>
+<?php 
+if (isset($_REQUEST["buscar"]) && !empty($_REQUEST["busqueda"])) {?>
+<a href="ComicListado.php" >Ver todos los comics</a>
+<?php } ?>
+<br>
 <a href="UsuarioPerfilVer.php?usuarioCliente=<?=$_SESSION["usuarioCliente"]?>" >Ver Perfil</a>
-
+<br>
 <a href="ComicFicha.php?idComic=-1" >Añadir comic</a>
 <br>
 <a href='CategoriaListado.php'>Volver al listado de Categorias.</a>
+<br>
 <a href='SesionCerrar.php'>Cerrar Session</a>
+
 
 </body>
 </html>

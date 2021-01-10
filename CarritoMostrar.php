@@ -1,7 +1,8 @@
 <?php
 require_once "_com/DAO.php";
+$clausula = "";
 $productos = DAO::pedidoCrearParaCliente($_REQUEST['idCliente']);
-$comics = DAO::comicObtenerTodos();
+$comics = DAO::comicObtenerTodos($clausula);
 $totalProductos = 0;
 $precioTotal = 0;
 ?>
