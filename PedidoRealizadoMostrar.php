@@ -1,5 +1,8 @@
 <?php
 require_once "_com/DAO.php";
+if(!DAO::haySesionIniciada()){
+    redireccionar("SessionInicioFormulario.php");
+}
 $productos = DAO::pedidoRealizadoMostrar($_REQUEST['idPedido']);
 $totalProductos = 0;
 $precioTotal = 0;

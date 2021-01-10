@@ -1,6 +1,8 @@
 <?php
 require_once "_com/DAO.php";
-
+if(!DAO::haySesionIniciada()){
+    redireccionar("SessionInicioFormulario.php");
+}
 if(isset($_POST["guardar"])){
     $usuarioACtual=$_SESSION["usuarioCliente"];
     $resultados=DAO::obtenerClienteConUsuario($usuarioACtual);

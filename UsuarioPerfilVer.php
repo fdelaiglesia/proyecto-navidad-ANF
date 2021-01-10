@@ -4,12 +4,15 @@ ini_set('display_errors', "1");
 ini_set('display_startup_errors', "1");
 error_reporting(E_ALL);
 require_once "_com/DAO.php";
+if(!DAO::haySesionIniciada()){
+    redireccionar("SessionInicioFormulario.php");
+}
 
 if(isset($_REQUEST["usuarioCliente"])){
     $usuarioCliente=$_REQUEST["usuarioCliente"];
     $resultados=DAO::obtenerClienteConUsuario($usuarioCliente);
         if ($resultados[0]["fotoDePerfilCliente"] == "NULL"){
-            $foto="Unknown-person.gif";
+            $foto="uploads/Unknown-person.gif";
         }else{
             $foto=$resultados[0]["fotoDePerfilCliente"];
         }

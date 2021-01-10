@@ -53,7 +53,9 @@ $resultados=DAO::obtenerClienteConUsuario($_SESSION['usuarioCliente']);
             <p><?= $comic->getPrecioComic();?>€</p>
             </td>
             <td>
+            <?php if($_SESSION["usuarioCliente"]=="admin"){?>
             <a href='ComicEliminar.php?idComic=<?=$comic->getId()?>'> (X)</a>
+            <?php };?>
             </td>   
             <td>
             <a href='CarritoAnadir.php?idComic=<?=$comic->getId()?>&idCliente=<?=$_SESSION["idCliente"]?>'> Añadir al carrito</a>

@@ -1,5 +1,8 @@
 <?php
 require_once "_com/DAO.php";
+if(!DAO::haySesionIniciada()){
+    redireccionar("SessionInicioFormulario.php");
+}
 $pedidos = DAO::pedidoObtetenerTodos($_REQUEST['idCliente']);
 
 ?>
@@ -31,7 +34,7 @@ $pedidos = DAO::pedidoObtetenerTodos($_REQUEST['idCliente']);
 
             <tr>
                 <td>
-                    <a href="PedidoRealizadoMostrar.php?idPedido=<?=$pedido->getIdPedido()?>"><?=  $pedido->getDireccionEnvio()?></p>
+                    <a href="PedidoRealizadoMostrar.php?idPedido=<?=$pedido->getIdPedido()?>"><?=  $pedido->getDireccionEnvio()?></a>
                 </td>
                 <td>
                     <p><?php echo date("d/m/Y",strtotime($pedido->getFechaConfirmacion()));?></p>

@@ -1,5 +1,8 @@
 <?php
 require_once "_com/DAO.php";
+if(!DAO::haySesionIniciada()){
+    redireccionar("SessionInicioFormulario.php");
+}
 $clausula = "";
 $productos = DAO::pedidoCrearParaCliente($_REQUEST['idCliente']);
 $comics = DAO::comicObtenerTodos($clausula);

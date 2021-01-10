@@ -1,6 +1,8 @@
 <?php
 require_once "_com/DAO.php";
-
+if(!DAO::haySesionIniciada()){
+    redireccionar("SessionInicioFormulario.php");
+}
 $categorias = DAO::categoriaObtenerTodos();
 
 ?>
@@ -26,8 +28,9 @@ $categorias = DAO::categoriaObtenerTodos();
     foreach ($categorias as $categoria) { ?>
         <tr>
         <td><a href='CategoriaFicha.php?id=<?=$categoria->getId()?>'> <?=$categoria->getNombreCategoria()?> </a></td>
+        <?php if($_SESSION["usuarioCliente"]=="admin"){?>
         <td><a href='CategoriaEliminar.php?id=<?=$categoria->getId()?>'> (X)                            </a></td>                           </a></td>
-
+        <?php };?>
            
         </tr>
     <?php } ?>
