@@ -44,15 +44,15 @@ if(isset($_REQUEST["usuarioCliente"])){
 }?>
 
 <div class="formulario">
-    <img src="uploads/<?=$foto?>" height="280" width="280">
+    <img src="uploads/<?=$foto?>" height="150" width="150">
     <p>Usuario : <?=$resultados[0]["usuarioCliente"]?></p>
     <p>Nombre : <?=$resultados[0]["nombreCliente"]?></p>
     <p>Apellidos : <?=$resultados[0]["apellidosCliente"]?></p>
     <p>Email : <?=$resultados[0]["emailCliente"]?></p>
 </div>
-<a href='ComicListado.php'>Volver al listado de Comics</a>
-<a href='UsuarioCambiarContrasenna.php'>Cambiar contraseña</a>
-<a href='SesionCerrar.php'>Cerrar Session</a>
+<a href='ComicListado.php' >Volver al listado de Comics</a>
+<a href='UsuarioCambiarContrasenna.php' style="margin-left: 15px;">Cambiar contraseña</a>
+<a href='SesionCerrar.php' style="margin-left: 15px;">Cerrar Session</a>
 
 
 </body>
