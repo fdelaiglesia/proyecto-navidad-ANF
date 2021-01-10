@@ -453,9 +453,9 @@ class DAO
         }
     }
 
-    public static function pedidoConfirmar($idPedido,$direccionEnvioPedido): bool
-    {
-        $fecha = date("Y/m/d");
+    public static function pedidoConfirmar($idPedido,$direccionEnvioPedido,$idCliente): bool
+    {    self::pedidoQuitarDelStock($idCliente);
+        $fecha = date("Y/m/d H:i:s");
         $sql = "UPDATE pedido SET direccionEnvioPedido = ?, fechaConfrmacionPedido = ?  WHERE idPedido=? ";
         $return = DAO::ejecutarConsultaActualizar($sql, [$direccionEnvioPedido,$fecha,$idPedido]);
         if ($return) {
@@ -470,6 +470,7 @@ class DAO
     }
 
     public static function pedidoObtetenerTodos($idCliente){
+        
         $datos = [];
         $rs = self::ejecutarConsultaObtener(
             "SELECT * FROM pedido WHERE fechaConfrmacionPedido IS NOT NULL AND idCliente = ? ",
@@ -480,7 +481,7 @@ class DAO
             $pedido = self::pedidoCrearDesdeRs($fila);
             array_push($datos, $pedido);
         }
-
+   
         return $datos;
     }
 
@@ -500,5 +501,19 @@ class DAO
         }
 
         return $datos;
+    }
+    public static function pedidoQuitarDelStock($idCliente){
+
+        $datos = self::carritoObtenerIdCliente($idCliente);
+        foreach($datos as $dato){
+            $unidad = $dato->getUnidades();
+            $stock = self::carritoObtenerStock($dato->getIdComic());
+            $resta = ($stock - $unidad);
+            $comic = $dato->getIdComic();
+            self::ejecutarConsultaActualizar(
+                "UPDATE comic SET cantidadComic = ? WHERE idComic=?",
+                [$resta,$comic]
+             );
+        }
     }
 }// FIN DE LA CLASSE DAO

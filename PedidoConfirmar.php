@@ -1,7 +1,7 @@
 <?php
 require_once "_com/DAO.php";
 
-$sql = DAO::pedidoConfirmar($_REQUEST['idPedido'],$_REQUEST['direccionEnvioPedido']);
+$sql = DAO::pedidoConfirmar($_REQUEST['idPedido'],$_REQUEST['direccionEnvioPedido'],$_SESSION['idCliente']);
 $idPedido=$_REQUEST['idPedido'];
 ?>
 <html>
