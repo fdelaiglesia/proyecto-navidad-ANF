@@ -15,7 +15,7 @@ $idPedido=$_REQUEST['idPedido'];
 <body>
 <?php if($sql){ ?>
     <h1>Pedido finalizado</h1>
-    <p>¿Quieres <a href="FacturaGenerarPDF.php?idPedido=<?=$idPedido?>">descargar</a> la factura?</p><br>
+    <p>¿Quieres <a href="FacturaGenerarPDF.php?idPedido=<?=$idPedido?>" target="_blank">descargar</a> la factura?</p><br>
 <?php }else{ ?>
     <h1>Pedido no finalizado</h1>
     <p>Contacte con administrador</p>
