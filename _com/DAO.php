@@ -165,7 +165,7 @@ class DAO
     public static function comicObtenerPorId(int $id): ?Comic
     {
         $rs = self::ejecutarConsultaObtener(
-            "SELECT * FROM Comic WHERE idComic=?",
+            "SELECT * FROM comic WHERE idComic=?",
             [$id]
         );
         if ($rs) return self::comicCrearDesdeRs($rs[0]);
